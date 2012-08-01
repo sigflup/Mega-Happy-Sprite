@@ -1,0 +1,96 @@
+#!/bin/sh
+
+if expr $# "<" "1" > /dev/null; then
+ echo "Usage: csig <file.c>"
+ exit
+fi
+
+echo "********* " $1 "*********"
+
+if ! test -f $1; then
+ echo $1 "no such file :("
+ exit
+fi
+
+if gpg --verify $1; then
+ echo "*** already signed, and verifiable- doing nothing"
+ exit
+fi
+
+rm -f /tmp/csig.sign
+grep HEADER: $0 | grep -v grep | sed -e s/HEADER://g > /tmp/csig.plain
+
+cat /tmp/csig.plain | wc -l > /tmp/header_size
+
+head -n `expr \`cat /tmp/header_size\` + 4` $1 | tail -n `cat /tmp/header_size` > /tmp/diff_one
+
+if `diff /tmp/csig.plain /tmp/diff_one > /dev/null`; then
+ echo "*** ok, resigning"
+
+ grep TAIL: $0 | grep -v grep | sed -e s/TAIL://g > /tmp/tail
+ cat /tmp/tail | wc -l > /tmp/tail_size
+ expr `cat /tmp/tail_size` + 8 > /tmp/tail_size
+
+
+ tail +`expr \`cat /tmp/header_size\` + 5` $1 >  /tmp/strip0
+
+
+ cat /tmp/strip0 | wc -l > /tmp/strip_size
+ head -n `expr \` cat /tmp/strip_size\` - \`cat /tmp/tail_size\`` /tmp/strip0 > /tmp/strip
+
+else
+ echo "*** ok, signing new file"
+ cp $1 /tmp/strip
+fi
+
+cat /tmp/strip >> /tmp/csig.plain
+grep TAIL: $0 | grep -v grep | sed -e s/TAIL://g >> /tmp/csig.plain
+if ! gpg --default-key 0xA6E706B3 --armor --output /tmp/csig.sign --clearsign /tmp/csig.plain; then
+ echo "*** couldn't sign for some reason (probably doesn't have the private key), aborting"
+ rm -rf /tmp/csig.plain \
+        /tmp/csig.sign \
+	/tmp/diff_one \
+	/tmp/header_size \
+	/tmp/tail_size \
+	/tmp/tail \
+	/tmp/strip_size \
+	/tmp/strip \
+	/tmp/strip0
+
+ exit
+fi
+
+echo "/*" > /tmp/strip
+cat /tmp/csig.sign >> /tmp/strip
+echo "*/" >> /tmp/strip
+
+cp /tmp/strip $1
+rm -rf /tmp/csig.plain \
+        /tmp/csig.sign \
+	/tmp/diff_one \
+	/tmp/header_size \
+	/tmp/tail_size \
+	/tmp/tail \
+	/tmp/strip_size \
+	/tmp/strip \
+	/tmp/strip0
+
+exit
+
+HEADER:  http://pgp.mit.edu:11371/pks/lookup?op=get&search=0xA6E70B3
+HEADER:  m m mm mmm .----------.  .---------------------. mmm mm m m
+HEADER:  8 8 88 888 | .--------`  |  .------------------` 888 88 8 8
+HEADER:  8 8 88 888 | ```````|`V```````|   |``||``|`````| 888 88 8 8
+HEADER:  8 8 88 888 `------  | |  [] | |``````||  |  [] | 888 88 8 8
+HEADER:  8 8 88 888 |``````  | |     | ````|````  |     | 888 88 8 8
+HEADER:  ` ` `` ``` ``````````````>  |````````````|   |`` ``` `` ` `
+HEADER:                ==============`            `---`
+HEADER:                                 L A B O R A T O R I E S
+HEADER:   
+HEADER:    Good hello, this is official SigFLUP-Labs sourcecode :-()
+HEADER:
+HEADER: This is GNU software, please read ../LICENSE for details
+HEADER:*/
+
+TAIL:/*
+TAIL:  Thank you for your attention

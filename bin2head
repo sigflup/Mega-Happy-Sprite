@@ -1,0 +1,4 @@
+#!/usr/bin/perl
+undef $/;$z=<STDIN>;print "$ARGV[0] = {";
+for($i=0;$i<length($z);$i++){if(!(7&$i)){print "\n";}
+printf " 0x%02x,",ord(substr($z,$i,1));}print "\n};\n";

@@ -1,0 +1,113 @@
+#!/bin/sh
+
+if ! which csig; then
+ echo "installing csig in current directory"
+ grep SCRIPT: $0 | grep -v "grep SCRIPT:" | sed -e s/SCRIPT://g > csig
+ PROG="./csig"
+ chmod +x ./csig
+else
+ PROG="csig"
+fi
+
+for ff in *.c *.h; do
+ ${PROG} ${ff};
+done
+
+exit
+
+SCRIPT:#!/bin/sh
+SCRIPT:
+SCRIPT:if expr $# "<" "1" > /dev/null; then
+SCRIPT: echo "Usage: csig <file.c>"
+SCRIPT: exit
+SCRIPT:fi
+SCRIPT:
+SCRIPT:echo "********* " $1 "*********"
+SCRIPT:
+SCRIPT:if ! test -f $1; then
+SCRIPT: echo $1 "no such file :("
+SCRIPT: exit
+SCRIPT:fi
+SCRIPT:
+SCRIPT:if gpg --verify $1; then
+SCRIPT: echo "*** already signed, and verifiable- doing nothing"
+SCRIPT: exit
+SCRIPT:fi
+SCRIPT:
+SCRIPT:rm -f /tmp/csig.sign
+SCRIPT:grep HEADER: $0 | grep -v grep | sed -e s/HEADER://g > /tmp/csig.plain
+SCRIPT:
+SCRIPT:cat /tmp/csig.plain | wc -l > /tmp/header_size
+SCRIPT:
+SCRIPT:head -n `expr \`cat /tmp/header_size\` + 4` $1 | tail -n `cat /tmp/header_size` > /tmp/diff_one
+SCRIPT:
+SCRIPT:if `diff /tmp/csig.plain /tmp/diff_one > /dev/null`; then
+SCRIPT: echo "*** ok, resigning"
+SCRIPT:
+SCRIPT: grep TAIL: $0 | grep -v grep | sed -e s/TAIL://g > /tmp/tail
+SCRIPT: cat /tmp/tail | wc -l > /tmp/tail_size
+SCRIPT: expr `cat /tmp/tail_size` + 8 > /tmp/tail_size
+SCRIPT:
+SCRIPT:
+SCRIPT: tail +`expr \`cat /tmp/header_size\` + 5` $1 >  /tmp/strip0
+SCRIPT:
+SCRIPT:
+SCRIPT: cat /tmp/strip0 | wc -l > /tmp/strip_size
+SCRIPT: head -n `expr \` cat /tmp/strip_size\` - \`cat /tmp/tail_size\`` /tmp/strip0 > /tmp/strip
+SCRIPT:
+SCRIPT:else
+SCRIPT: echo "*** ok, signing new file"
+SCRIPT: cp $1 /tmp/strip
+SCRIPT:fi
+SCRIPT:
+SCRIPT:cat /tmp/strip >> /tmp/csig.plain
+SCRIPT:grep TAIL: $0 | grep -v grep | sed -e s/TAIL://g >> /tmp/csig.plain
+SCRIPT:if ! gpg --default-key 0xA6E706B3 --armor --output /tmp/csig.sign --clearsign /tmp/csig.plain; then
+SCRIPT: echo "*** couldn't sign for some reason (probably doesn't have the private key), aborting"
+SCRIPT: rm -rf /tmp/csig.plain \
+SCRIPT:        /tmp/csig.sign \
+SCRIPT:	/tmp/diff_one \
+SCRIPT:	/tmp/header_size \
+SCRIPT:	/tmp/tail_size \
+SCRIPT:	/tmp/tail \
+SCRIPT:	/tmp/strip_size \
+SCRIPT:	/tmp/strip \
+SCRIPT:	/tmp/strip0
+SCRIPT:
+SCRIPT: exit
+SCRIPT:fi
+SCRIPT:
+SCRIPT:echo "/*" > /tmp/strip
+SCRIPT:cat /tmp/csig.sign >> /tmp/strip
+SCRIPT:echo "*/" >> /tmp/strip
+SCRIPT:
+SCRIPT:cp /tmp/strip $1
+SCRIPT:rm -rf /tmp/csig.plain \
+SCRIPT:        /tmp/csig.sign \
+SCRIPT:	/tmp/diff_one \
+SCRIPT:	/tmp/header_size \
+SCRIPT:	/tmp/tail_size \
+SCRIPT:	/tmp/tail \
+SCRIPT:	/tmp/strip_size \
+SCRIPT:	/tmp/strip \
+SCRIPT:	/tmp/strip0
+SCRIPT:
+SCRIPT:exit
+SCRIPT:
+SCRIPT:HEADER:  http://pgp.mit.edu:11371/pks/lookup?op=get&search=0xA6E70B3
+SCRIPT:HEADER:  m m mm mmm .----------.  .---------------------. mmm mm m m
+SCRIPT:HEADER:  8 8 88 888 | .--------`  |  .------------------` 888 88 8 8
+SCRIPT:HEADER:  8 8 88 888 | ```````|`V```````|   |``||``|`````| 888 88 8 8
+SCRIPT:HEADER:  8 8 88 888 `------  | |  [] | |``````||  |  [] | 888 88 8 8
+SCRIPT:HEADER:  8 8 88 888 |``````  | |     | ````|````  |     | 888 88 8 8
+SCRIPT:HEADER:  ` ` `` ``` ``````````````>  |````````````|   |`` ``` `` ` `
+SCRIPT:HEADER:                ==============`            `---`
+SCRIPT:HEADER:                                 L A B O R A T O R I E S
+SCRIPT:HEADER:   
+SCRIPT:HEADER:    Good hello, this is official SigFLUP-Labs sourcecode :-()
+SCRIPT:HEADER:
+SCRIPT:HEADER: This is GNU software, please read ../LICENSE for details
+SCRIPT:HEADER:*/
+SCRIPT:
+SCRIPT:TAIL:/*
+SCRIPT:TAIL:  Thank you for your attention

@@ -1,0 +1,8 @@
+
+avoiding left and bottom -edge-drawing in draw.c do to Uint32 access on 
+last pixel causing a seg fault
+
+Put clipping back into draw_drop
+
+in draw_drop if drop is bigger then dst we seg-fault. Temp fix in proc_move_button
+

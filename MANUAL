@@ -1,0 +1,59 @@
+ 
+    .-------------------------------------------------------------.
+    | .--. .--..----..----..--     .-.-..--    .--. .--.  .-. .-. |
+    | |*. V . ||*---`|* __.|* `    |*| ||* `   |( )}|( )} |* |* | |
+    | | |`.`| ||  |  | |  ||   `   |   ||   `  | .` | .`     |    |
+    | | |   | || ---.|    || |` `  | | || |` ` | |  | |    `. .`  |
+    | `-`   `-``----``----``-` `-` `-`-``-` `-``-`  `-`     `-`   |
+    | ..............---..--. .--. .----..----..----.............. |
+    |              | .` |( )}|( )}`-..-``-..-`| ---`              |
+    |              |_--.| .` | . ]  ||    ||  |  |                |
+    | --------------.` || |--| | |.-``-.--||--| ---.------------- |
+    | =============`---``-`==`-`-`'----`==``==`----`============= |
+    `-------------------------------------------------------------`
+ 
+  
+GOOD HELLO and welcome fellow hackers to Mega-Happy-Sprite!! My name is
+SigFLUP and I'll be your hostess. 
+
+Mega-Happy-Sprite is designed to be kinda self-explanatory. So I'm not
+really going to get into to much detail. You know, just figure it out
+if you have any questions give me an email at pantsbutt@gmail.com. What
+I want to describe in this text are the things that are not so obvious.
+If you want to write a nice manual I'd really appreciate it. Or if you
+have a krad logo or something else send me it so we can get it in the
+main distribution. Anyway- so
+ 
+TIP: Be sure to pay attention to what plane you are editing. All 
+drawing tools will write to it even if it's not visible.
+ 
+Tools that read information, like picking a color or picking a pattern
+only care about what's visible and not what your editing.
+ 
+If you select something and copy or move it. While your dragging it you
+can press any key to stamp the screen with it.
+ 
+You can quickly set stops if your cursor is in the pattern-editing box
+or the pattern-selecting box. Press up to go down a pattern, press down
+to go up one. Press left to disable a stop. Press right to enable a
+stop.
+ 
+The .mega file format is text with all the binary bits uuencoded into
+it. If you want you could run
+ 
+$ uuencode -c i_love_cats.mega
+ 
+and it will probably output VRAM VSRAM and CRAM for your own personal
+use. 
+ 
+The rest of the file looks like this:
+ 
+<something> = <something else>
+ 
+start-stops
+ <numbers>
+end-stops
+ 
+... wait a second, fuck this! Who wants to write a manual?!?! email
+me at pantsbutt@gmail.com I'll give you a hug and be your best friend
+I'm fucking serious.
