@@ -385,41 +385,27 @@ void read_dir(struct select_file_t *selector) {
  char *buf, *ebuf, *cp;
  long base;
  size_t bufsize;
- int fd, nbytes;
+ DIR *fd;
  char *path;
  struct stat sb;
  struct dirent *dp;
 
 
  len = 0;
- if(( fd = open(selector->path, O_RDONLY)) < 0) return;
- fstat(fd, &sb);
- bufsize = sb.st_size;
- if(bufsize < sb.st_blksize);
-  bufsize = sb.st_blksize;
-  buf = malloc(bufsize);
-  while((nbytes = getdirentries(fd,buf,bufsize,&base))>0) {
-   ebuf = buf+nbytes;
-   cp = buf;
-   while(cp<ebuf) {
-    dp = (struct dirent *)cp;
-    if(dp->d_fileno!=0) {
-     for(i=0;;i++) {
-      selector->text_lines[len][i] = dp->d_name[i];
-      if(dp->d_name[i] == 0) break;
-     }  
-     len++; 
-     if(len == BIGBUF) {
-      printf("oh geeze- way to many files in this directory\n");
-      exit(-1);
-     }
-    }
-    cp+=dp->d_reclen;
-   }
-  }
-  free(buf);
+ if((fd = opendir(selector->path))<=0) return;
 
- close(fd);
+ len = 0;
+ while((dp = readdir(fd))>0) {
+  if(dp->d_fileno!=0) {
+   for(i=0;;i++) {
+    selector->text_lines[len][i] = dp->d_name[i];
+    if(dp->d_name[i] == 0) break;
+   }  
+  }
+  len++;
+ }
+
+ closedir(fd);
 
  qsort(selector->text_lines, len-1, sizeof(char)*MEDBUF, qsort_cmp);
 
@@ -442,7 +428,9 @@ void read_dir(struct select_file_t *selector) {
    selector->lines[i]->param.d2 = NO_TEXT;
  }
  selector->scroll_bar->param.d1 = 0;
+
 }
+
 
 int do_save(struct select_file_t *selector, char *filename) {
  char sorry_text[SMALLBUF];
