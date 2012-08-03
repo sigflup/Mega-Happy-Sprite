@@ -1,21 +1,3 @@
-/*
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA1
-
-  http://pgp.mit.edu:11371/pks/lookup?op=get&search=0xA6E70B3
-  m m mm mmm .----------.  .---------------------. mmm mm m m
-  8 8 88 888 | .--------`  |  .------------------` 888 88 8 8
-  8 8 88 888 | ```````|`V```````|   |``||``|`````| 888 88 8 8
-  8 8 88 888 `------  | |  [] | |``````||  |  [] | 888 88 8 8
-  8 8 88 888 |``````  | |     | ````|````  |     | 888 88 8 8
-  ` ` `` ``` ``````````````>  |````````````|   |`` ``` `` ` `
-                ==============`            `---`
-                                 L A B O R A T O R I E S
-   
-    Good hello, this is official SigFLUP-Labs sourcecode :-()
-
- This is GNU software, please read ../LICENSE for details
-*/
 
 #define PARM(X,Y,W,H,FG,BG,FLAGS,PROC)	tmp_parm.x = X;\
 				        tmp_parm.y = Y; \
@@ -137,13 +119,3 @@ int destroy_group(group_t *grp);
 int group_loop(group_t *grp);
 int broadcast_group(group_t *grp, int msg, int data);
 int init_gui(int x, int y, int flags);
-/*
-  Thank you for your attention
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.9 (OpenBSD)
-
-iEYEARECAAYFAkogj5AACgkQMNO4A6bnBrOMcwCfR5S8tNf5FJ/G0CRmn45OdlAb
-rgwAoIB66xJZwqTB3m3ZzEntnS5SqQBw
-=vzHf
------END PGP SIGNATURE-----
-*/

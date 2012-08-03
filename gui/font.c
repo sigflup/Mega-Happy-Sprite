@@ -1,21 +1,3 @@
-/*
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA1
-
-  http://pgp.mit.edu:11371/pks/lookup?op=get&search=0xA6E70B3
-  m m mm mmm .----------.  .---------------------. mmm mm m m
-  8 8 88 888 | .--------`  |  .------------------` 888 88 8 8
-  8 8 88 888 | ```````|`V```````|   |``||``|`````| 888 88 8 8
-  8 8 88 888 `------  | |  [] | |``````||  |  [] | 888 88 8 8
-  8 8 88 888 |``````  | |     | ````|````  |     | 888 88 8 8
-  ` ` `` ``` ``````````````>  |````````````|   |`` ``` `` ` `
-                ==============`            `---`
-                                 L A B O R A T O R I E S
-   
-    Good hello, this is official SigFLUP-Labs sourcecode :-()
-
- This is GNU software, please read ../LICENSE for details
-*/
 #include <stdio.h>
 #include <stdlib.h>
 #include "../config.h"
@@ -185,13 +167,3 @@ unsigned char font[] = {
  0x76, 0xDC, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
  0x00, 0x10, 0x38, 0x6C, 0xC6, 0xC6, 0xFE, 0x00
 };
-/*
-  Thank you for your attention
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.9 (OpenBSD)
-
-iEYEARECAAYFAkogj4kACgkQMNO4A6bnBrOrMACgh+0oXBIVDBlEURH/MgwiIIeH
-mScAnjhoSpwDW3wWunzooxpnYTQZgjNj
-=jKlt
------END PGP SIGNATURE-----
-*/

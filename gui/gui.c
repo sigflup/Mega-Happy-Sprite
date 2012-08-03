@@ -1,21 +1,3 @@
-/*
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA1
-
-  http://pgp.mit.edu:11371/pks/lookup?op=get&search=0xA6E70B3
-  m m mm mmm .----------.  .---------------------. mmm mm m m
-  8 8 88 888 | .--------`  |  .------------------` 888 88 8 8
-  8 8 88 888 | ```````|`V```````|   |``||``|`````| 888 88 8 8
-  8 8 88 888 `------  | |  [] | |``````||  |  [] | 888 88 8 8
-  8 8 88 888 |``````  | |     | ````|````  |     | 888 88 8 8
-  ` ` `` ``` ``````````````>  |````````````|   |`` ``` `` ` `
-                ==============`            `---`
-                                 L A B O R A T O R I E S
-   
-    Good hello, this is official SigFLUP-Labs sourcecode :-()
-
- This is GNU software, please read ../LICENSE for details
-*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -437,13 +419,3 @@ int init_gui(int x,int y, int flags) {
  lock_update = 0;
  return 1;
 }
-/*
-  Thank you for your attention
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.9 (OpenBSD)
-
-iEYEARECAAYFAkogj4oACgkQMNO4A6bnBrPYkQCfbx+XqGby7HjAHiimlyUSuB5r
-p9QAn3phPm4ba0rmvZK0Y96oFOnBiYwU
-=/AFp
------END PGP SIGNATURE-----
-*/

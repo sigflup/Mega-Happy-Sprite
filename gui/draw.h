@@ -1,21 +1,3 @@
-/*
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA1
-
-  http://pgp.mit.edu:11371/pks/lookup?op=get&search=0xA6E70B3
-  m m mm mmm .----------.  .---------------------. mmm mm m m
-  8 8 88 888 | .--------`  |  .------------------` 888 88 8 8
-  8 8 88 888 | ```````|`V```````|   |``||``|`````| 888 88 8 8
-  8 8 88 888 `------  | |  [] | |``````||  |  [] | 888 88 8 8
-  8 8 88 888 |``````  | |     | ````|````  |     | 888 88 8 8
-  ` ` `` ``` ``````````````>  |````````````|   |`` ``` `` ` `
-                ==============`            `---`
-                                 L A B O R A T O R I E S
-   
-    Good hello, this is official SigFLUP-Labs sourcecode :-()
-
- This is GNU software, please read ../LICENSE for details
-*/
 #define NO_HASH		1	
 #define HASH		2
 /* ok so the above two are constants for non-text draw stuff */
@@ -39,13 +21,3 @@ int fill_box(int x, int y, int x2, int y2, color_t *fg, color_t *bg, int type);
 int box(int x, int y, int x2, int y2, color_t *fg, color_t *bg, int type);
 
 void clear_screen(void);
-/*
-  Thank you for your attention
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.9 (OpenBSD)
-
-iEYEARECAAYFAkogj44ACgkQMNO4A6bnBrP5qwCcCQICUo/F9SJ1VfJyfTcpIp5q
-QfUAn0qYrz55ObtTHVKu8kQrqXmX9uGC
-=EhA0
------END PGP SIGNATURE-----
-*/

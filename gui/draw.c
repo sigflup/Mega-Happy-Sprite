@@ -1,21 +1,3 @@
-/*
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA1
-
-  http://pgp.mit.edu:11371/pks/lookup?op=get&search=0xA6E70B3
-  m m mm mmm .----------.  .---------------------. mmm mm m m
-  8 8 88 888 | .--------`  |  .------------------` 888 88 8 8
-  8 8 88 888 | ```````|`V```````|   |``||``|`````| 888 88 8 8
-  8 8 88 888 `------  | |  [] | |``````||  |  [] | 888 88 8 8
-  8 8 88 888 |``````  | |     | ````|````  |     | 888 88 8 8
-  ` ` `` ``` ``````````````>  |````````````|   |`` ``` `` ` `
-                ==============`            `---`
-                                 L A B O R A T O R I E S
-   
-    Good hello, this is official SigFLUP-Labs sourcecode :-()
-
- This is GNU software, please read ../LICENSE for details
-*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -324,14 +306,3 @@ int box(int x, int y, int x2, int y2, color_t *fg, color_t *bg, int type) {
  return 0;
 }
 
-
-/*
-  Thank you for your attention
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.9 (OpenBSD)
-
-iEYEARECAAYFAkogj4cACgkQMNO4A6bnBrMXPACgl32KVFEiMmz6KJzaW14kMv2H
-a1QAn2B/h4WxlVR8Bgtn8esDT+qzjeNl
-=snKc
------END PGP SIGNATURE-----
-*/
