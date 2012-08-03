@@ -171,7 +171,7 @@ int proc_bitmap(int msg, struct object_t *obj, int data) {
        walker->param.w+(walker->param.w/4),walker->param.h+(walker->param.h/4), NULL);	
      }
      walker = (struct object_t *)walker->node.next;
-     if((int)walker == (int)current_grp->objs) break;
+     if(walker == (struct object_t *)current_grp->objs) break;
     } 
    }
   break;

@@ -34,12 +34,12 @@ Uint32 timer_callback(Uint32 interval) {
     if(CHECK_FLAG(walker->flags, ACTIVE_ONLY_WITH_PARENT) == FALSE) 
      walker->obj->param.proc(walker->msg, walker->obj, walker->data);
     else
-     if((int)current_grp == (int)walker->parent_grp)
+     if(current_grp == walker->parent_grp)
       walker->obj->param.proc(walker->msg, walker->obj, walker->data);
    }
   }
   walker = (gui_timer_t *)walker->node.next;
-  if((int)walker == (int)globl_timer) break;
+  if(walker == globl_timer) break;
  }
  return interval;
 }
@@ -75,7 +75,7 @@ gui_timer_t *add_timer(struct object_t *obj, int reset, int msg, int data,group_
 void del_timer(gui_timer_t *in) {
  timer_lock = 1;
  list_del(&in->node);
- if((int)in == (int)globl_timer) {
+ if(in == globl_timer) {
   free(globl_timer);
   globl_timer = (void *)-1;
  }

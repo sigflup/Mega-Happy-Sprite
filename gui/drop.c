@@ -99,7 +99,8 @@ void draw_drop(SDL_Surface *dst, int x, int y, drop_t *drop, int w, int h, SDL_R
  } else
   offset_y = 0;
 
- pix = (Uint8 *)(int)(dst->pixels + 
+ /* XXX pointer math */
+ pix = (Uint8 *)(dst->pixels + 
                  (dst->pitch * y) + (dst->format->BytesPerPixel * x));
 
  mask = 0;
@@ -217,7 +218,7 @@ drop_t *new_drop(int depth) {
    if(new_walker->depth == depth) 
     return new_walker;
    new_walker = (drop_t *)new_walker->node.next;
-   if((int)new_walker == (int)drops)  break;
+   if(new_walker == (drop_t *)drops)  break;
   }
  }
 

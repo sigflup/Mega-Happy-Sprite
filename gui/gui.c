@@ -76,7 +76,7 @@ struct object_t *new_obj(group_t *grp, obj_param_t *param) {
  new->in_focus = FALSE;
  new->clicked = FALSE;
  memcpy(&new->param, param, sizeof(obj_param_t));
- if((int)grp->objs == (int)NULL) {
+ if(grp->objs == NULL) {
   grp->objs = new;
   INIT_LIST_HEAD(&grp->objs->node);
  } else
@@ -92,7 +92,7 @@ int broadcast_group(group_t *grp, int msg, int data) {
  for(;;) {
   walker->param.proc(msg, walker, data);
   walker = (struct object_t *)walker->node.next;
-  if((int)walker == (int)grp->objs) break;
+  if(walker == grp->objs) break;
  }
  if(globl_dirt == 1) 
   clipped_update(grp->pos_x, grp->pos_y, grp->w, grp->h);
@@ -129,7 +129,7 @@ int wait_on_mouse(void) {
    break;
   }
  }
- if((int)globl_wait_tick!=-1)
+ if(globl_wait_tick!=(void *)-1)
   globl_wait_tick();
  return ret;
 }
@@ -190,7 +190,9 @@ int group_loop(group_t *grp) {
    clip_h -= (clip_y + clip_h) - gui_screen->h;
 
  save_buf=(unsigned char *)malloc((clip_w*clip_h)*gui_screen->format->BytesPerPixel);
- pix = (unsigned char *)((int)gui_screen->pixels +
+
+/* XXX pointer math */
+ pix = (unsigned char *)(gui_screen->pixels +
                          (clip_y * gui_screen->pitch) +
 			 (clip_x * gui_screen->format->BytesPerPixel) );
 
@@ -203,9 +205,10 @@ int group_loop(group_t *grp) {
  if((clip_h - clip_y)>gui_screen->h)
   clip_h = gui_screen->h - clip_y;
  for(i=0;i<clip_h;i++) 
+  /* XXX pointer math */
   memcpy(
-    (unsigned char *)((int)save_buf+(i*(clip_w*gui_screen->format->BytesPerPixel))),
-    (unsigned char *)((int)pix +    (i*gui_screen->pitch)),
+    (unsigned char *)(save_buf+(i*(clip_w*gui_screen->format->BytesPerPixel))),
+    (unsigned char *)(pix +    (i*gui_screen->pitch)),
                                         clip_w*gui_screen->format->BytesPerPixel);
  UNLOCK;
 
@@ -222,7 +225,7 @@ int group_loop(group_t *grp) {
  }
 
   walker = grp->objs;
-   if((int)walker != (int)NULL){
+   if(walker != NULL){
     for(;;) {
      if(gui_mouse_x > (grp->pos_x + walker->param.x)                   &&
         gui_mouse_x < (grp->pos_x + walker->param.x + walker->param.w) &&
@@ -235,7 +238,7 @@ int group_loop(group_t *grp) {
        walker->in_focus = FALSE;
 
      walker = (struct object_t *)walker->node.next;
-     if((int)walker == (int)grp->objs) break;
+     if(walker == grp->objs) break;
     }
    }
 
@@ -256,7 +259,7 @@ int group_loop(group_t *grp) {
      gui_mouse_x = event.motion.x;
      gui_mouse_y = event.motion.y;
      walker = grp->objs;
-     if((int)walker != (int)NULL){
+     if(walker != NULL){
       for(;;) {
        if(gui_mouse_x > (grp->pos_x + walker->param.x)                   &&
 	  gui_mouse_x < (grp->pos_x + walker->param.x + walker->param.w) &&
@@ -277,7 +280,7 @@ int group_loop(group_t *grp) {
 	}
 
        walker = (struct object_t *)walker->node.next;
-       if((int)walker == (int)grp->objs) break;
+       if(walker == grp->objs) break;
       }
      }
 
@@ -302,7 +305,7 @@ int group_loop(group_t *grp) {
        }
       }
       walker = (struct object_t *)walker->node.next;
-      if((int)walker == (int)grp->objs) break;
+      if(walker == (struct object_t *)grp->objs) break;
      }
     break;
     case SDL_KEYUP:
@@ -348,7 +351,7 @@ int group_loop(group_t *grp) {
        }
       }
       walker = (struct object_t *)walker->node.next;
-      if((int)walker == (int)grp->objs) break;
+      if(walker == (struct object_t *)grp->objs) break;
      }
     break;
    }
@@ -356,14 +359,15 @@ int group_loop(group_t *grp) {
   if(globl_dirt == 1)
    clipped_update(current_grp->pos_x, current_grp->pos_y,
                   current_grp->pos_x+current_grp->w, current_grp->pos_y+current_grp->h);
-  if((int)globl_tick!=-1)
+  if(globl_tick!=(void *)-1)
    globl_tick();
  }
 done1:
  LOCK;
  for(i=0;i<clip_h;i++) 
-  memcpy( (unsigned char *)((int)pix + (i*gui_screen->pitch)),
-          (unsigned char *)((int)save_buf+(i*(clip_w*gui_screen->format->BytesPerPixel))),
+  /* XXX pointer math */
+  memcpy( (unsigned char *)(pix + (i*gui_screen->pitch)),
+          (unsigned char *)(save_buf+(i*(clip_w*gui_screen->format->BytesPerPixel))),
 	                                      clip_w*gui_screen->format->BytesPerPixel);
  UNLOCK;
  if(globl_quit_value == MOVE_GROUP) 
@@ -395,7 +399,7 @@ int destroy_group(group_t *grp) {
   prev = walker;
   walker = (struct object_t *)walker->node.next;
   free(prev);
-  if((int)walker == (int)grp->objs) break; 
+  if(walker == (struct object_t *)grp->objs) break; 
  }
  return 0;
 }

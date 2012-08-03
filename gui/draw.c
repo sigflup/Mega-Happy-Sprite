@@ -79,7 +79,8 @@ int vline(int rx, int ry, int ry2, color_t *fg, color_t *bg, int type) {
  else
   y2 = ry2;
 
- pix.b = (Uint8 *)((int)gc->pixels + 
+ /* XXX pointer math */
+ pix.b = (Uint8 *)(gc->pixels + 
                    (gc->pitch * (y+current_grp->pos_y)) + 
 		   (gc->format->BytesPerPixel * (x+current_grp->pos_x)));
 
@@ -150,7 +151,8 @@ int hline(int rx, int ry, int rx2, color_t *fg, color_t *bg, int type) {
  else 
   x2 = rx2;
 
- pix.b = (Uint8 *)((int)gc->pixels+
+ /* XXX pointer math */
+ pix.b = (Uint8 *)(gc->pixels+
                    (gc->pitch * (y+current_grp->pos_y)) +
 		   (gc->format->BytesPerPixel * (x+current_grp->pos_x)));
 
@@ -233,7 +235,8 @@ int fill_box(int x, int y, int x2, int y2,color_t *fg,color_t *bg,int type){
  else
   ry2 = y2;
 
- pix.b = (Uint8 *)((int)gc->pixels +
+ /* XXX pointer math */
+ pix.b = (Uint8 *)(gc->pixels +
                    (gc->pitch * (ry+current_grp->pos_y)) +
 		   (gc->format->BytesPerPixel * (rx+current_grp->pos_x)));
 

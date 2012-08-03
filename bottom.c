@@ -462,7 +462,7 @@ int copy_move_menu_bot(struct object_t *obj, int data) {
 
 
 int tool_change(struct object_t *obj, int data) {
- if( (int)obj == (int)select_object) {
+ if( obj == select_object) {
 #define REPEAT \
   if(currently_editing == EDIT_SPRITE) { \
    obj->param.d1 = FALSE; \
@@ -480,33 +480,33 @@ int tool_change(struct object_t *obj, int data) {
   last_tool = obj;
   return RET_OK;
  }
- if( (int)obj == (int)fill_object) {
+ if( obj == fill_object) {
   current_tool = FILL;
   last_tool = obj;
   return RET_OK;
  }
- if((int)obj == (int)line_object) {
+ if(obj == line_object) {
   current_tool = LINE;
   last_tool = obj;
   return RET_OK;
  }
- if( (int)obj == (int)pic_object) {
+ if(obj == pic_object) {
   current_tool = PIC;
   last_tool = obj;
   return RET_OK;
  }
- if( (int)obj == (int)clear_to_color_object) {
+ if( obj == clear_to_color_object) {
   current_tool = CLRCOLOR;
   last_tool = obj;
   return RET_OK;
  }
- if( (int)obj == (int)pic_pat_object) {
+ if( obj == pic_pat_object) {
   REPEAT;
   current_tool = PIC_PAT;
   last_tool = obj;
   return RET_OK;
  }
- if( (int)obj == (int)put_pat_object) {
+ if( obj == put_pat_object) {
   REPEAT;
   high_low_grp->pos_x = gui_mouse_x-6;
   high_low_grp->pos_y = gui_mouse_y-6;
@@ -519,7 +519,7 @@ int tool_change(struct object_t *obj, int data) {
   current_tool = PUT_PAT;
   return RET_OK;
  }
- if( (int)obj == (int)flip_object) {
+ if( obj == flip_object) {
   REPEAT;
   hor_ver_grp->pos_x = gui_mouse_x - 6;
   hor_ver_grp->pos_y = gui_mouse_y - 6;
@@ -532,7 +532,7 @@ int tool_change(struct object_t *obj, int data) {
   current_tool = FLIP;
   return RET_OK;
  }
- if( (int)obj == (int)pal_hi_low_object) {
+ if( obj == pal_hi_low_object) {
   REPEAT;
   pal_hi_low_grp->pos_x = gui_mouse_x - 6;
   pal_hi_low_grp->pos_y = gui_mouse_y - 6;

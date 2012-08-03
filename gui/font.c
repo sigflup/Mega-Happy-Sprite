@@ -23,7 +23,8 @@ void draw_char(int x, int y, char c, int fg_color, int bg_color, int flags) {
  if((y+current_grp->pos_y) < 0) return;
  if((y+current_grp->pos_y) > gc->h-8) return;
 
- pix.b = (Uint8 *)((int)gc->pixels+
+ /* XXX pointer math */
+ pix.b = (Uint8 *)(gc->pixels+
                    ((x+current_grp->pos_x)*gc->format->BytesPerPixel) +
 		   ((y+current_grp->pos_y)*gc->pitch));
 

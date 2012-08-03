@@ -124,7 +124,7 @@ struct menu_entry_t load_menu[] = {
  {"  VRAM  Binary   ", CALL_BUTTON, LOAD_VRAM,  load_save_middle},
  {"  VSRAM Binary   ", CALL_BUTTON, LOAD_VSRAM, load_save_middle},
  {"  CRAM  Binary   ", CALL_BUTTON, LOAD_CRAM,  load_save_middle},
- {(char *)NULL,(int)NULL,(int)NULL,NULL}
+ {(char *)NULL,0,0,NULL}
 };
 
 struct menu_entry_t save_menu[] = {
@@ -134,32 +134,32 @@ struct menu_entry_t save_menu[] = {
  {"  CRAM  Binary   ", CALL_BUTTON, SAVE_CRAM,  load_save_middle},
  {"  CRAM  Text     ", CALL_BUTTON, SAVE_CRAM_HEAD, load_save_middle},
 /* {"  LOAD MESSAGE   ", CALL_BUTTON, CHANGE_LOAD_MESSAGE, load_save_middle},*/
- {(char *)NULL,(int)NULL,(int)NULL,NULL}
+ {(char *)NULL,0,0,NULL}
 };
 
 struct menu_entry_t high_low_menu[] = {
  {" HIGH ", CALL_BUTTON,HIGH,high_low_menu_bot},
  {" LOW  ", CALL_BUTTON,LOW, high_low_menu_bot},
- {(char *)NULL,(int)NULL,(int)NULL,NULL}
+ {(char *)NULL,0,0,NULL}
 };
 
 struct menu_entry_t horizontal_vertical_menu[] = {
  {" HORIZONTAL ", CALL_BUTTON, HORIZONTAL, hor_ver_menu_bot},
  {" VERTICAL   ", CALL_BUTTON, VERTICAL, hor_ver_menu_bot},
- {(char *)NULL,(int)NULL,(int)NULL,NULL}
+ {(char *)NULL,0,0,NULL}
 };
 
 struct menu_entry_t pal_hi_low_menu[] = {
  {" PALETTE ", CALL_BUTTON, PALETTE, pal_hi_low_menu_bot},
  {"  HIGH   ", CALL_BUTTON, HIGH, pal_hi_low_menu_bot},
  {"  LOW    ", CALL_BUTTON, LOW,  pal_hi_low_menu_bot},
- {(char *)NULL, (int)NULL, (int)NULL, NULL}
+ {(char *)NULL, 0, 0, NULL}
 };
 
 struct menu_entry_t copy_move_menu[] = {
  {" COPY ", CALL_BUTTON, COPY, copy_move_menu_bot},
  {" MOVE ", CALL_BUTTON, MOVE, copy_move_menu_bot},
- {(char *)NULL, (int)NULL, (int)NULL, NULL}
+ {(char *)NULL, 0, 0, NULL}
 };
 
 int load_ovr(char *filename) {

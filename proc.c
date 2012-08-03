@@ -87,13 +87,13 @@ void change_color(int palette, int index) {
 /*}}}*/
 /*change_color_bot{{{*/
 int color_change_bot(struct object_t *obj, int data) {
- if((int)obj == (int)rgb_red_object) 
+ if(obj == rgb_red_object) 
   current_vdp->palette[current_palette][current_palette_index].r = 
    obj->param.d1 * (0xff/7);
- if((int)obj == (int)rgb_green_object) 
+ if(obj == rgb_green_object) 
   current_vdp->palette[current_palette][current_palette_index].g = 
    obj->param.d1 * (0xff/7);
- if((int)obj == (int)rgb_blue_object) 
+ if(obj == rgb_blue_object) 
   current_vdp->palette[current_palette][current_palette_index].b = 
    obj->param.d1 * (0xff/7);
  MAP_COLOR(current_vdp->palette[current_palette][current_palette_index]);
@@ -316,7 +316,7 @@ int select_special(int msg, struct object_t *obj, int data) {
 int preview_zoom_change(struct object_t *obj, int data) {
  float dx, dy;
  UPDATE_OBJECT(obj);
- if((int)obj == (int)preview_zoom_in) {
+ if(obj == preview_zoom_in) {
   preview_zoom_in->param.d1 = FALSE;
   vdp_zoom++;
   if(vdp_zoom == 2) {
@@ -366,7 +366,7 @@ done:
 /*}}}*/
 /*preview_scroll_change{{{*/
 int preview_scroll_change(struct object_t *obj, int data) {
- if( (int)obj != (int)preview_scroll_bar) {
+ if( obj != preview_scroll_bar) {
   vdp_x = preview_x_scroll->param.d1;
   vdp_y = preview_y_scroll->param.d1;
  } 
@@ -636,7 +636,8 @@ int proc_preview_object(int msg, struct object_t *obj, int data) {
 
    if(vdp_zoom == 1) {
 
-    pix = (Uint8 *)((int)gui_screen->pixels + (gui_screen->pitch * obj->param.y) +
+    /* XXX pointer math */
+    pix = (Uint8 *)(gui_screen->pixels + (gui_screen->pitch * obj->param.y) +
                     gui_screen->format->BytesPerPixel * obj->param.x);
     if(currently_editing != EDIT_SPRITE) {
      if(current_vdp->tv_type == NTSC) 
@@ -1939,7 +1940,8 @@ int proc_pattern_select(int msg, struct object_t *obj, int data) {
 
    fill_box( obj->param.x, obj->param.y, 
              obj->param.x+(5*8)+2,  obj->param.y+(0xa * 16)+8, obj->param.bg, obj->param.bg, NO_HASH);
-   pix.b=(Uint8 *)((int)gc->pixels + (gc->pitch*obj->param.y));
+   /* XXX pointer math */
+   pix.b=(Uint8 *)(gc->pixels + (gc->pitch*obj->param.y));
    for(i=0;i<0xa;i++) {
     top = ((pattern_select_scroll_bar->param.d1 +i) << 8);
     snprintf(buf, 6, "%04X", top);
@@ -2008,10 +2010,12 @@ int proc_pattern_select(int msg, struct object_t *obj, int data) {
 
 
     for(y=0;y<8;y++) {
-     pix.b = (Uint8 *)((int)gui_screen->pixels+(gui_screen->pitch*(obj->param.y+4+(i*16)+(y*2)))+
+     /* XXX pointer math */
+     pix.b = (Uint8 *)(gui_screen->pixels+(gui_screen->pitch*(obj->param.y+4+(i*16)+(y*2)))+
                        (gui_screen->format->BytesPerPixel * (46+obj->param.x)));
 
-     next.b =(Uint8 *)(int)(pix.b + gui_screen->pitch);
+
+     next.b =(Uint8 *)(pix.b + gui_screen->pitch);
      for(j=0;j<8;j++) { 
       pat_num = ((pattern_select_scroll_bar->param.d1 + i) *8) +  j;
       poffset = pat_num * 0x20 + (y*4); 
@@ -2040,7 +2044,8 @@ int proc_pattern_select(int msg, struct object_t *obj, int data) {
       }
      }
      /* we're drawing 2x2 pixels, so we double the scan-line */
-     memcpy(next.b, (void *)((int)next.b - gui_screen->pitch), 
+     /* XXX pointer math */
+     memcpy(next.b, (void *)(next.b - gui_screen->pitch), 
             gc->format->BytesPerPixel*128);
     }
    }
