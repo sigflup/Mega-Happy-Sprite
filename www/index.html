@@ -1,0 +1,77 @@
+<title>Mega Happy Sprite</title>
+<head>
+<script type="text/javascript" src="sack.js"></script>
+
+<style rel="stylesheet">
+
+a:link    {text-decoration:none}
+a:visited {text-decoration:none}
+a:active  {text-decoration:none}
+a:hover {
+ background: #000000; 
+ color: #ffffff; 
+ cursor: pointer;
+ text-decoration:none
+}
+
+html {height: 101%; }
+
+a.doclink:link    {background: #000000; color: #ffffff;text-decoration:none}
+a.doclink:visited {background: #000000; color: #ffffff;text-decoration:none}
+a.doclink:active  {background: #000000; color: #ffffff;text-decoration:none}
+a.doclink:hover {
+ background: #ffffff;
+ color: #000000;
+}
+
+</style>
+
+<script type="text/javascript">
+var ajax = new sack();
+
+function whenLoading(where) {
+ var e = document.getElementById(where);
+ e.innerHTML = '<img src=\"loading.gif\"><br>';
+}
+
+function load(what,where) {
+ ajax.requestFile = what;
+ ajax.method = "get";
+ ajax.element = where;
+ ajax.onLoading = whenLoading(where);
+ ajax.runAJAX();
+}
+</script>
+
+</head>
+
+<body onload="load('about.html','txt_output');" bgcolor="#c2c2b8" text="#000000" link="#000000" alink="#000000" vlink="#000000" background="grid.png">
+<center>
+
+<img src="raver.png">
+
+<table width="85%"><tr><td bgcolor="#000000" height="1px"></td></tr></table>
+
+<table width="600px">
+<tr>
+<td align=center valign=middle>
+<a href="#"  onclick="load('about.html','txt_output');"><b>ABOUT</b></a>
+</td>
+<td align=center valign=middle>
+<a href="#" onclick="load('download.html','txt_output');"><b>DOWNLOAD</b></a>
+</td>
+<td align=center valign=middle>
+<a href="#"  onclick="load('manual.html','txt_output');"><b>MANUAL</b></a>
+</td>
+</tr>
+</table>
+
+<table width="85%"><tr><td bgcolor="#000000" height="1px"></td></tr></table>
+<br><br><br>
+<table width="90%"><tr><td align=middle>
+<div id="txt_output">
+</div>
+</td></tr></table>
+
+</center>
+</body>
