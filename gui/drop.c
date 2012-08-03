@@ -54,11 +54,11 @@ void tack_line(int offset, int depth) {
 }
 
 void build_coef(void) {
- int i=0,j, k;
+ int i=0,j;
  j = 0;
  for(i = 0;i<MAX_DEPTH;i++)
   j+=i;
- gauss_coef = (int *)malloc(j * sizeof(int));
+ gauss_coef = (long *)malloc(j * sizeof(long));
  gauss_coef[0] = 1;
 
  j = 1;
@@ -152,7 +152,7 @@ void draw_drop(SDL_Surface *dst, int x, int y, drop_t *drop, int w, int h, SDL_R
                                    (b*(alpha))>>8);
 #ifdef WORDS_BIGENDIAN
    color<<=8;
-#endif;
+#endif
 //   color = SDL_MapRGB(dst->format, alpha, 0, 0);
    *intp &= mask;
    *intp += color;
@@ -177,7 +177,7 @@ void new_gauss_width(int width) {
   k+=i;
  } 
  gauss_sum/=2;
- gauss_fact = &gauss_coef[k];
+ gauss_fact = (int *)&gauss_coef[k];
 }
 
 int blur(Uint8 *src, int w, int h) {
@@ -216,13 +216,13 @@ int blur(Uint8 *src, int w, int h) {
    src[x+(y*w)]=sum/gauss_sum;
   }
  free(tmp);
+ return 0;
 }
 
 
 drop_t *new_drop(int depth) {
  Uint8 *buffer;
- Uint32 *intp;
- int x,y, i;
+ int x,y;
  int actual_w, actual_h;
  int border;
  drop_t *new_walker;

@@ -38,7 +38,6 @@ int proc_knob(int msg, struct object_t *obj, int data) {
  SDL_Rect dst;
  float theta;
  char buf[10];
- int i;
  float scale;
  int x,j;
  int y;
@@ -67,7 +66,7 @@ int proc_knob(int msg, struct object_t *obj, int data) {
             obj->param.x+obj->param.w, obj->param.y+obj->param.h, 
 	    obj->param.bg, obj->param.bg, NO_HASH);
    if(CHECK_FLAG(obj->param.flags, INACTIVE) == TRUE) {
-    snprintf(buf, 10, ":C", obj->param.d1);
+    snprintf(buf, 10, ":C");
    } else {
     if(CHECK_FLAG(obj->param.flags, HEX) == TRUE)
      snprintf(buf, 10, "%x", obj->param.d1);
@@ -125,7 +124,7 @@ int proc_knob(int msg, struct object_t *obj, int data) {
      MESSAGE_OBJECT(obj, MSG_DRAW);
      UPDATE_OBJECT(obj);
      if(CHECK_FLAG(obj->param.flags, CALL_BUTTON) == TRUE) {
-      ret =  obj->param.callback( obj, NULL);
+      ret =  obj->param.callback( obj, 0);
       if(ret != RET_OK) return ret;
      }
     }
@@ -141,7 +140,7 @@ int proc_knob(int msg, struct object_t *obj, int data) {
     if(obj->param.d1 != 0) obj->param.d1--;
    MESSAGE_OBJECT(obj, MSG_DRAW); 
    if(CHECK_FLAG(obj->param.flags, CALL_BUTTON) == TRUE) {
-    ret =  obj->param.callback( obj, NULL);
+    ret =  obj->param.callback( obj, 0);
     if(ret != RET_OK) return ret;
    }
 
@@ -155,11 +154,10 @@ int proc_knob(int msg, struct object_t *obj, int data) {
 }
 
 int proc_bitmap(int msg, struct object_t *obj, int data) {
- SDL_Rect *src, des;
+ SDL_Rect des;
  SDL_Surface *bmp;
  struct object_t *walker;
  drop_t *tmp_drop;
- int actual_w, actual_h;
  if((CHECK_FLAG(obj->param.flags, INACTIVE) == TRUE) &&
     (msg != MSG_START)) return RET_OK;
  switch(msg) {
@@ -293,7 +291,7 @@ int proc_icon_button(int msg, struct object_t *obj, int data) {
      obj->param.d1 = FALSE;
     else 
      obj->param.d1 = TRUE;
-    proc_icon_button(MSG_DRAW, obj, NULL);
+    proc_icon_button(MSG_DRAW, obj, 0);
    }
    break;
   case MSG_CLICK:
@@ -302,17 +300,17 @@ int proc_icon_button(int msg, struct object_t *obj, int data) {
      obj->param.d1 = FALSE;
     else
      obj->param.d1 = TRUE;
-    proc_icon_button(MSG_DRAW,obj, NULL);
+    proc_icon_button(MSG_DRAW,obj, 0);
     if(CHECK_FLAG(obj->param.flags, CALL_BUTTON) == TRUE)
-     return obj->param.callback(obj, NULL);
+     return obj->param.callback(obj, 0);
     break;
    }
 
    if(CHECK_FLAG(obj->param.flags, TOGGLE) == TRUE) { 
     obj->param.d1 ^= 1;
-    proc_icon_button(MSG_DRAW, obj, NULL);
+    proc_icon_button(MSG_DRAW, obj, 0);
     if(CHECK_FLAG(obj->param.flags, CALL_BUTTON) == TRUE)
-    return obj->param.callback(obj,NULL);
+    return obj->param.callback(obj,0);
     break;
    }
    active_before = obj->param.d1;
@@ -321,15 +319,15 @@ int proc_icon_button(int msg, struct object_t *obj, int data) {
    broadcast_group(current_grp, MSG_RADIO2, obj->param.d2);
    if(CHECK_FLAG(obj->param.flags, CALL_BUTTON) == TRUE &&
      active_before == 0) 
-   return obj->param.callback(obj, NULL);
+   return obj->param.callback(obj, 0);
    break;
   case MSG_INFOCUS:
    if(CHECK_FLAG(obj->param.flags, SHOW_FOCUS) == TRUE)
-    proc_icon_button(MSG_DRAW, obj, NULL);
+    proc_icon_button(MSG_DRAW, obj, 0);
    break;
   case MSG_OUTFOCUS:
    obj->clicked = FALSE;
-   proc_icon_button(MSG_DRAW, obj, NULL);
+   proc_icon_button(MSG_DRAW, obj, 0);
    break;
 
  }
@@ -376,7 +374,7 @@ int proc_radio_button(int msg, struct object_t *obj, int data) {
      obj->param.d1 = FALSE;
     else 
      obj->param.d1 = TRUE;
-    proc_radio_button(MSG_DRAW, obj, NULL);
+    proc_radio_button(MSG_DRAW, obj, 0);
    }
    break;
   case MSG_CLICK:
@@ -385,9 +383,9 @@ int proc_radio_button(int msg, struct object_t *obj, int data) {
      obj->param.d1 = FALSE;
     else
      obj->param.d1 = TRUE;
-    proc_radio_button(MSG_DRAW,obj, NULL);
+    proc_radio_button(MSG_DRAW,obj, 0);
     if(CHECK_FLAG(obj->param.flags, CALL_BUTTON) == TRUE)
-     return obj->param.callback(obj, NULL);
+     return obj->param.callback(obj, 0);
     break;
    }
    active_before = obj->param.d1;
@@ -396,15 +394,15 @@ int proc_radio_button(int msg, struct object_t *obj, int data) {
    broadcast_group(current_grp, MSG_RADIO, obj->param.d2);
    if(CHECK_FLAG(obj->param.flags, CALL_BUTTON) == TRUE &&
      active_before == 0) 
-   return obj->param.callback(obj, NULL);
+   return obj->param.callback(obj, 0);
    break;
   case MSG_INFOCUS:
    if(CHECK_FLAG(obj->param.flags, SHOW_FOCUS) == TRUE)
-    proc_radio_button(MSG_DRAW, obj, NULL);
+    proc_radio_button(MSG_DRAW, obj, 0);
    break;
   case MSG_OUTFOCUS:
    obj->clicked = FALSE;
-   proc_radio_button(MSG_DRAW, obj, NULL);
+   proc_radio_button(MSG_DRAW, obj, 0);
    break;
 
  }
@@ -418,7 +416,7 @@ int proc_move_button(int msg, struct object_t *obj, int data) {
  int clip_x1, clip_y1, clip_x2, clip_y2;
  int CLIP_x1, CLIP_y1, CLIP_x2, CLIP_y2;
 
- SDL_Event event;
+
  if((CHECK_FLAG(obj->param.flags, INACTIVE) == TRUE) &&
     (msg != MSG_START)) return RET_OK;
 
@@ -516,7 +514,7 @@ int proc_ctext(int msg, struct object_t *obj, int data) {
 
 int proc_button_box(int msg, struct object_t *obj, int data) {
  color_t *fg, *bg;
- int ret;
+ 
  if(CHECK_FLAG(obj->param.flags, INACTIVE) == TRUE) return RET_OK;
 
  switch(msg) {
@@ -526,7 +524,7 @@ int proc_button_box(int msg, struct object_t *obj, int data) {
    vline(obj->param.x + obj->param.w+1, obj->param.y+1, 
          obj->param.y + obj->param.h+1, obj->param.fg, obj->param.bg, NO_HASH);
    hline(obj->param.x +1, obj->param.y + obj->param.h+1, 
-         obj->param.x + obj->param.w+2, obj->param.fg, &obj->param.bg, NO_HASH);
+         obj->param.x + obj->param.w+2, obj->param.fg, obj->param.bg, NO_HASH);
   
    if(obj->clicked == TRUE) {
     fg = obj->param.bg;
@@ -550,17 +548,17 @@ int proc_button_box(int msg, struct object_t *obj, int data) {
   break; 
   case MSG_INFOCUS:
    if(CHECK_FLAG(obj->param.flags, SHOW_FOCUS) == TRUE)
-    proc_button_box(MSG_DRAW, obj, NULL);
+    proc_button_box(MSG_DRAW, obj, 0);
    break;
   case MSG_OUTFOCUS:
    obj->clicked = FALSE;
-   proc_button_box(MSG_DRAW, obj, NULL);
+   proc_button_box(MSG_DRAW, obj, 0);
    break;
   case MSG_CLICK:
-   proc_button_box(MSG_DRAW,obj, NULL);
+   proc_button_box(MSG_DRAW,obj, 0);
    break;
   case MSG_UNCLICK:
-   proc_button_box(MSG_DRAW,obj, NULL);
+   proc_button_box(MSG_DRAW,obj, 0);
    break;
   case MSG_PRESS:
    if(CHECK_FLAG(obj->param.flags, QUIT_BUTTON) == TRUE) {
@@ -568,7 +566,7 @@ int proc_button_box(int msg, struct object_t *obj, int data) {
     return RET_QUIT;
    }
    if(CHECK_FLAG(obj->param.flags, CALL_BUTTON) == TRUE) {
-    return obj->param.callback(obj, NULL);
+    return obj->param.callback(obj, 0);
    }
    break;
  }
@@ -606,11 +604,11 @@ int proc_shadow_box(int msg, struct object_t *obj, int data) {
   break; 
   case MSG_INFOCUS:
    if(CHECK_FLAG(obj->param.flags, SHOW_FOCUS) == TRUE)
-    proc_shadow_box(MSG_DRAW, obj, NULL);
+    proc_shadow_box(MSG_DRAW, obj, 0);
    break;
   case MSG_OUTFOCUS:
    if(CHECK_FLAG(obj->param.flags, SHOW_FOCUS) == TRUE)
-    proc_shadow_box(MSG_DRAW, obj, NULL);
+    proc_shadow_box(MSG_DRAW, obj, 0);
    break;
  }
  return RET_OK;
@@ -715,10 +713,10 @@ int proc_scroll_bar(int msg, struct object_t *obj, int data) {
       obj->param.d1 = obj->param.d2;
      if(ld!=obj->param.d1) {
       if(CHECK_FLAG(obj->param.flags, CALL_BUTTON) == TRUE) {
-       ret =  obj->param.callback( obj, NULL);
+       ret =  obj->param.callback( obj, 0);
        if(ret != RET_OK) return ret;
       }
-      proc_scroll_bar(MSG_DRAW,obj, NULL);
+      proc_scroll_bar(MSG_DRAW,obj, 0);
       UPDATE_OBJECT(obj);
      }
     }
@@ -729,11 +727,11 @@ int proc_scroll_bar(int msg, struct object_t *obj, int data) {
    break;
   case MSG_INFOCUS:
    if(CHECK_FLAG(obj->param.flags, SHOW_FOCUS) == TRUE)
-    proc_scroll_bar(MSG_DRAW,obj, NULL);
+    proc_scroll_bar(MSG_DRAW,obj, 0);
    break;
   case MSG_OUTFOCUS:
    if(CHECK_FLAG(obj->param.flags, SHOW_FOCUS) == TRUE) 
-    proc_scroll_bar(MSG_DRAW,obj, NULL);
+    proc_scroll_bar(MSG_DRAW,obj, 0);
    break;
   case MSG_KEYDOWN:
    if(obj->param.h == 11 ) {
@@ -751,21 +749,21 @@ int proc_scroll_bar(int msg, struct object_t *obj, int data) {
     obj->param.d1++;
     if(obj->param.d1 > obj->param.d2) obj->param.d1--;
     if(CHECK_FLAG(obj->param.flags, CALL_BUTTON) == TRUE) {
-     ret =  obj->param.callback( obj, NULL);
+     ret =  obj->param.callback( obj, 0);
      if(ret != RET_OK) return ret;
     }
 
-    proc_scroll_bar(MSG_DRAW,obj, NULL);
+    proc_scroll_bar(MSG_DRAW,obj, 0);
     UPDATE_OBJECT(obj);
    }
    if(data == dec_key1|| data == dec_key2) {
     obj->param.d1--;
     if(obj->param.d1 < 0) obj->param.d1++;
     if(CHECK_FLAG(obj->param.flags, CALL_BUTTON) == TRUE) {
-     ret =  obj->param.callback( obj, NULL);
+     ret =  obj->param.callback( obj, 0);
      if(ret != RET_OK) return ret;
     }
-    proc_scroll_bar(MSG_DRAW,obj, NULL);
+    proc_scroll_bar(MSG_DRAW,obj, 0);
     UPDATE_OBJECT(obj);
 
    }
@@ -818,7 +816,7 @@ int scroll_text_bot(int msg, struct object_t *obj, int data) {
  for(i = 0;i< scroll_text_num_lines;i++) 
   scroll_text_text[i]->param.dp1 = (void *)&scroll_text_data[scroll_text_lines[i+
     scroll_text_bar->param.d1]];
- broadcast_group(current_grp, MSG_DRAW, NULL);
+ broadcast_group(current_grp, MSG_DRAW, 0);
  return RET_OK;
 }
 
@@ -882,7 +880,7 @@ void scroll_text_window(int cent_x, int cent_y, int w, int h, char *text, int le
  tmp_parm.bg = &globl_bg;
  tmp_parm.flags = SHOW_FOCUS | CALL_BUTTON;
  tmp_parm.proc = proc_scroll_bar;
- tmp_parm.callback = scroll_text_bot;
+ tmp_parm.callback = (void *)scroll_text_bot;
  scroll_text_bar = new_obj(scroll_text_group, &tmp_parm);
 
  tmp_parm.x = 4;

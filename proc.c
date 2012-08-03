@@ -8,6 +8,7 @@
 #include "draw.h"
 #include "proc.h"
 #include "bottom.h"
+#include "mega_file.h"
 
 struct object_t *pattern_select_scroll_bar,
 		*pattern_select_object;
@@ -142,7 +143,7 @@ int select_quit_on_click(int msg, struct object_t *obj, int data) {
 /*load_default_mega{{{*/
 int load_default_mega(int msg, struct object_t *obj, int data) {
  struct select_file_t test;
- if(load_initial != TRUE) return;
+ if(load_initial != TRUE) return RET_OK;
  if(msg == MSG_START) {
   test.usr_flags = LOAD;
   load_save_mega(&test, load_initial_name);
@@ -150,6 +151,7 @@ int load_default_mega(int msg, struct object_t *obj, int data) {
 
   change_color(0, 0);
  }
+ return RET_OK;
 }
 /*}}}*/
 /*select_special{{{*/
@@ -159,8 +161,8 @@ int select_special(int msg, struct object_t *obj, int data) {
  int x,y;
  int lx, ly;
  int off_x, off_y;
- int mode, offset;
- int x_div, y_div;
+ int mode=0, offset=0;
+ int x_div, y_div=0;
 // printf("user_flags: %d\n", obj->param.user_flags);
  switch(msg) {
   case MSG_START:
@@ -373,7 +375,7 @@ int preview_scroll_change(struct object_t *obj, int data) {
 }
 /*}}}*/
 /*preview_size_change{{{*/
-void preview_size_change(void) {
+int preview_size_change(struct object_t *obj, int data) {
  if(preview_ntsc->param.d1 == TRUE)  
   current_vdp->tv_type = NTSC;
  else
@@ -397,16 +399,16 @@ void preview_size_change(void) {
 
   MESSAGE_OBJECT( pattern_select_object, MSG_DRAW);
  }
+ return RET_OK;
 }
 /*}}}*/
 
 /*proc_sprite_size {{{ */
 int proc_sprite_size(int msg, struct object_t *obj, int data) {
  int i;
- int x,y;
+ int x=0,y=0;
  int lx,ly;
  int ox, oy;
- int flags;
  switch(msg) {
   case MSG_DRAW:
 
@@ -454,7 +456,7 @@ int proc_sprite_size(int msg, struct object_t *obj, int data) {
 /*proc_scroll_size{{{*/
 int proc_scroll_size(int msg, struct object_t *obj, int data) {
  int i;
- int x,y;
+ int x=0,y=0;
  int lx,ly;
  int ox, oy;
  int flags;
@@ -539,6 +541,7 @@ int proc_info(int msg, struct object_t *obj, int data) {
 
    break;
  }
+ return RET_OK;
 }
 /*}}}*/
 /*proc_preview_object{{{*/
@@ -549,22 +552,19 @@ int proc_preview_object(int msg, struct object_t *obj, int data) {
  int info_x=0, info_y=0;
  int pal=0;
  int actual_x=0, actual_y=0;
- int i=0,j=0,k=0;
+ int i=0,j=0;
  pixel_dump_t *pat_pix=0;
  int pat_num=0;
  int x2=0, y2=0;
  int x3=0, y3=0;
- int dr=0, dg=0, db=0;
 
  Uint8 *pix=0;
- color_t *fin=0;
  color_t A;
  int off_x=0, off_y=0;
  int mask=0, *intp=0;
  int tmp_color=0;
  int ret=0;
- SDL_Rect dst, src;
- SDL_Surface *p=0;
+ SDL_Rect src;
  vdp_pixel *current_pixels=0;
  int current_w=0, current_h=0;
  int tmp_h=0, tmp_w=0;
@@ -857,13 +857,13 @@ int proc_preview_object(int msg, struct object_t *obj, int data) {
    if(selection_v1.x != NO_SELECTION) {
 
     num_xor_pix = 0;
-    do_line(NULL, NULL, 
+    do_line(NULL, 0, 
       selection_v1.x, selection_v1.y, selection_v2.x, selection_v1.y, put_xor_hash_pix);
-    do_line(NULL, NULL, 
+    do_line(NULL, 0, 
       selection_v2.x, selection_v1.y, selection_v2.x, selection_v2.y, put_xor_hash_pix);
-    do_line(NULL, NULL, 
+    do_line(NULL, 0, 
       selection_v2.x, selection_v2.y, selection_v1.x, selection_v2.y, put_xor_hash_pix);
-    do_line(NULL, NULL, 
+    do_line(NULL, 0, 
       selection_v1.x, selection_v2.y, selection_v1.x, selection_v1.y, put_xor_hash_pix);
     for(i=0;i<num_xor_pix;i++) {
      actual_x = ((xor_pixels[i].x-vdp_x)*vdp_zoom) + off_x; 
@@ -896,10 +896,10 @@ int proc_preview_object(int msg, struct object_t *obj, int data) {
       MESSAGE_OBJECT(info_object, MSG_DRAW);
       UPDATE_OBJECT(info_object);
       num_xor_pix = 0;
-      do_line(NULL, NULL, x, y, x2, y, put_xor_hash_pix);
-      do_line(NULL, NULL, x2, y, x2, y2, put_xor_hash_pix);
-      do_line(NULL, NULL, x2, y2, x, y2, put_xor_hash_pix);
-      do_line(NULL, NULL, x, y2, x, y, put_xor_hash_pix);  
+      do_line(NULL, 0, x, y, x2, y, put_xor_hash_pix);
+      do_line(NULL, 0, x2, y, x2, y2, put_xor_hash_pix);
+      do_line(NULL, 0, x2, y2, x, y2, put_xor_hash_pix);
+      do_line(NULL, 0, x, y2, x, y, put_xor_hash_pix);  
 #define REPEAT\
       for(i=0;i<num_xor_pix;i++) {\
        actual_x = ((xor_pixels[i].x-vdp_x)*vdp_zoom) + off_x; \
@@ -958,7 +958,7 @@ int proc_preview_object(int msg, struct object_t *obj, int data) {
       group_loop(copy_move_grp);
 
       if(copy_move != NOT_SELECTED){
-       snprintf(info_object->param.dp2, 30, ":-|", x2, y2);
+       snprintf(info_object->param.dp2, 30, ":-|");
        save_state();
        for(i=0;i<320*240;i++){
 	vdp_backbuf[i].color.r = vdp_screen[i].color.r;
@@ -1138,7 +1138,7 @@ int proc_preview_object(int msg, struct object_t *obj, int data) {
      x2 = ((((gui_mouse_x - obj->param.x) - off_x) / vdp_zoom) + vdp_x);
      y2 = ((((gui_mouse_y - obj->param.y) - off_y) / vdp_zoom) + vdp_y);
       num_xor_pix = 0;
-      do_line(NULL, NULL, x, y, x2, y2, put_xor_pix); 
+      do_line(NULL, 0, x, y, x2, y2, put_xor_pix); 
 
       snprintf(info_object->param.dp1, 30, "A(%d,%d)",x,y);
       snprintf(info_object->param.dp2, 30, "B(%d,%d),%d", x2, y2, num_xor_pix);
@@ -1722,7 +1722,7 @@ int proc_pattern_edit(int msg,struct object_t *obj, int data) {
  int x,y;
  int lx, ly;
  int j;
- int x1, y1;
+ int x1=0, y1=0;
  int sub_x, sub_y;
  color_t *save_bg;
  char buf[4];
@@ -1798,7 +1798,7 @@ int proc_pattern_edit(int msg,struct object_t *obj, int data) {
 	y1 = y;
 	j++;
        }
-       do_line(NULL, NULL, x1, y1, x, y, put_pix_draw_buffer);
+       do_line(NULL, 0, x1, y1, x, y, put_pix_draw_buffer);
 #define REPEAT \
        for(sub_y=0;sub_y<8;sub_y++) \
 	for(sub_x=0;sub_x<8;sub_x++) \
@@ -1910,6 +1910,7 @@ int pattern_select_bot(struct object_t *obj, int data) {
 /* MESSAGE_OBJECT(current_color_object, MSG_DRAW);
  MESSAGE_OBJECT(current_color_text_object,MSG_DRAW); */
  UPDATE_OBJECT(pattern_select_object);
+ return RET_OK;
 }
 /*}}}*/
 /*proc_pattern_select{{{*/
@@ -1918,7 +1919,7 @@ int proc_pattern_select(int msg, struct object_t *obj, int data) {
  int li;
  int mult_pointers;
  int x,y;
- int  color, k, kolor;
+ int  k, kolor;
  int pat_num;
  int poffset;
  union {
@@ -2067,6 +2068,7 @@ int proc_pattern_select(int msg, struct object_t *obj, int data) {
        }
       }
       li = i;
+#undef REPEAT
 #define REPEAT \
       fill_box(obj->param.x + 46 + (16*x),  obj->param.y + 4 + (16*y),  \
                obj->param.x + 46 + (16*x)+16,obj->param.y +20+ (16*y), &globl_fg, &globl_bg, XOR);  
@@ -2218,7 +2220,7 @@ int proc_scroll_bar_special(int msg, struct object_t *obj, int data) {
  int start;
  int off_x, off_y;
  color_t *color;
- int q,q2, flip;
+ int flip;
 
  if(CHECK_FLAG(obj->param.flags, INACTIVE) == TRUE) return RET_OK;
 
@@ -2378,7 +2380,7 @@ int proc_scroll_bar_special(int msg, struct object_t *obj, int data) {
       }
       */
 
-      proc_scroll_bar_special(MSG_DRAW,obj, NULL);
+      proc_scroll_bar_special(MSG_DRAW,obj, 0);
       UPDATE_OBJECT(obj);
      }
     }
@@ -2391,11 +2393,11 @@ int proc_scroll_bar_special(int msg, struct object_t *obj, int data) {
    break;
   case MSG_INFOCUS:
    if(CHECK_FLAG(obj->param.flags, SHOW_FOCUS) == TRUE)
-    proc_scroll_bar_special(MSG_DRAW,obj, NULL);
+    proc_scroll_bar_special(MSG_DRAW,obj, 0);
    break;
   case MSG_OUTFOCUS:
    if(CHECK_FLAG(obj->param.flags, SHOW_FOCUS) == TRUE) 
-    proc_scroll_bar_special(MSG_DRAW,obj, NULL);
+    proc_scroll_bar_special(MSG_DRAW,obj, 0);
    break;
   case MSG_KEYDOWN:
    if(obj->param.h == 11 ) {
@@ -2413,21 +2415,21 @@ int proc_scroll_bar_special(int msg, struct object_t *obj, int data) {
     obj->param.d1++;
     if(obj->param.d1 > obj->param.d2) obj->param.d1--;
     if(CHECK_FLAG(obj->param.flags, CALL_BUTTON) == TRUE) {
-     ret =  obj->param.callback( obj, NULL);
+     ret =  obj->param.callback( obj, 0);
      if(ret != RET_OK) return ret;
     }
 
-    proc_scroll_bar_special(MSG_DRAW,obj, NULL);
+    proc_scroll_bar_special(MSG_DRAW,obj, 0);
     UPDATE_OBJECT(obj);
    }
    if(data == dec_key1|| data == dec_key2) {
     obj->param.d1--;
     if(obj->param.d1 < 0) obj->param.d1++;
     if(CHECK_FLAG(obj->param.flags, CALL_BUTTON) == TRUE) {
-     ret =  obj->param.callback( obj, NULL);
+     ret =  obj->param.callback( obj, 0);
      if(ret != RET_OK) return ret;
     }
-    proc_scroll_bar_special(MSG_DRAW,obj, NULL);
+    proc_scroll_bar_special(MSG_DRAW,obj, 0);
     UPDATE_OBJECT(obj);
 
    }
@@ -2439,8 +2441,6 @@ int proc_scroll_bar_special(int msg, struct object_t *obj, int data) {
 /* line_edit_wonked {{{ */
 int line_edit_wonked(int msg, struct object_t *obj, int data) {
  char *cp;
- int i;
- char name[BIGBUF];
  color_t tmp_color;
  switch(msg) {
   case MSG_START:

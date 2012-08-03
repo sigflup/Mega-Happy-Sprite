@@ -107,3 +107,4 @@ extern struct object_t *plus_object, *minus_object, *a_object, *b_object;
 extern int sprite_overlay_pic;
 extern int a_pattern, b_pattern;
 
+int load_ovr(char *filename);

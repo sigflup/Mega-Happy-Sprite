@@ -29,7 +29,7 @@ Hash: SHA1
 #include "font.h"
 
 void draw_char(int x, int y, char c, int fg_color, int bg_color, int flags) {
- int t,s,j;
+ int t,s;
  Uint32 color, mask;
  union {
   Uint8  *b;
@@ -52,7 +52,7 @@ void draw_char(int x, int y, char c, int fg_color, int bg_color, int flags) {
 
  for(t=0;t<8;t++)
   for(s=0;s<8;s++) {
-   if((font[ ((c-0x20) * 8)+t]>>(8-s)) &1 == 1) {
+   if(((font[ ((c-0x20) * 8)+t]>>(8-s)) &1) == 1) {
     if(CHECK_FLAG(flags,NO_HASH) == TRUE) 
      color = fg_color;
     else 

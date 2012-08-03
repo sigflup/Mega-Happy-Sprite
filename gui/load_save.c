@@ -18,6 +18,9 @@ Hash: SHA1
 */
 #include <stdio.h>
 #include <stdlib.h>
+#ifndef WINDOWS
+ #include <unistd.h>
+#endif
 #include <SDL.h>
 #include "gui_types.h"
 #include "link.h"
@@ -73,11 +76,12 @@ int fix_file(struct select_file_t *parent, char *filename) {
   if( fp < 0 )
    return BREAKER;
  } else {
-  if( fp < 0) 
+  if( fp < 0) {
    if(do_save(parent, new_path) == RET_QUIT)
     return QUITER;
    else
     return BREAKER;
+  }
  }
 
  fstat(fp, &qstat);
@@ -128,7 +132,6 @@ int line_edit(int msg, struct object_t *obj, int data) {
  char *cp;
  int fp, i;
  struct stat qstat;
- char name[BIGBUF];
  struct select_file_t *parent;
  color_t tmp_color;
  parent = (struct select_file_t *)obj->param.dp2;
@@ -259,10 +262,8 @@ int line_edit(int msg, struct object_t *obj, int data) {
 int text_hilight(int msg, struct object_t *obj, int data) {
  int q;
  int i;
- int fp;
  int w;
  char *cp;
- struct stat qstat;
  struct select_file_t *parent;
 
  color_t blue;
@@ -318,15 +319,15 @@ int text_hilight(int msg, struct object_t *obj, int data) {
    break;
   case MSG_CLICK:
    obj->param.d2 |= CLICKED;
-   text_hilight(MSG_DRAW,obj,NULL);
+   text_hilight(MSG_DRAW,obj,0);
    break;
   case MSG_OUTFOCUS:
   case MSG_UNCLICK:
    obj->param.d2 &= CLICKED^~0;
-   text_hilight(MSG_DRAW,obj,NULL);
+   text_hilight(MSG_DRAW,obj,0);
    break;
   case MSG_INFOCUS:
-   text_hilight(MSG_DRAW,obj,NULL);
+   text_hilight(MSG_DRAW,obj,0);
    break;
   case MSG_PRESS:
    if(parent->selected_line == obj->param.d1 + parent->scroll_bar->param.d1) {
@@ -354,7 +355,7 @@ int text_hilight(int msg, struct object_t *obj, int data) {
    fill_box(2,35,parent->grp->w-2,9,&globl_bg, &globl_bg,NO_HASH);
    MESSAGE_OBJECT( parent->name_object, MSG_START);
    MESSAGE_OBJECT( parent->name_object, MSG_DRAW);
-   text_hilight(MSG_DRAW,obj,NULL);
+   text_hilight(MSG_DRAW,obj,0);
    UPDATE_OBJECT(obj);
    break;
  }
@@ -382,12 +383,8 @@ int qsort_cmp(void *A, void *B) {
 void read_dir(struct select_file_t *selector) {
  int i,len;
 
- char *buf, *ebuf, *cp;
- long base;
- size_t bufsize;
+ char *cp;
  DIR *fd;
- char *path;
- struct stat sb;
  struct dirent *dp;
 
 
@@ -407,7 +404,7 @@ void read_dir(struct select_file_t *selector) {
 
  closedir(fd);
 
- qsort(selector->text_lines, len-1, sizeof(char)*MEDBUF, qsort_cmp);
+ qsort(selector->text_lines, len-1, sizeof(char)*MEDBUF, (void *)qsort_cmp);
 
  selector->selected_line = -1;
  cp = (char *)selector->name_object->param.dp1;

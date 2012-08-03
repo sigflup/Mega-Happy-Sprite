@@ -17,7 +17,7 @@ void put_pix_draw_buffer(Uint8 *ram, int pat, int x, int y){
 int get_pix(Uint8 *ram, int pat, int x, int y) {
  int base = 0;
  Uint8 dat = 0;
- base = (pat * 0x20)+((y*8)+x>>1);
+ base = (pat * 0x20)+(((y*8)+x)>>1);
  dat = ram[base];
  if( (x&1)==0) 
   dat>>=4;
@@ -35,8 +35,8 @@ int get_pix_preview_special(Uint8 *ram, int pat, int x, int y) {
    return vdp_screen[x + (y*320)].B.index;
   case EDIT_SPRITE:
    return sprite_screen[x+(y*32)].index;
-   return 0; 
  } 
+ return 0;
 }
 
 int get_pix_special(Uint8 *ram, int pat, int x, int y) {
@@ -51,7 +51,7 @@ int get_pix_special(Uint8 *ram, int pat, int x, int y) {
 void put_pix(Uint8 *ram, int pat, int x, int y) {
  int base =0;
  Uint8 dat=0,ldat=0;
- base = (pat * 0x20) +((y*8)+x>>1);
+ base = (pat * 0x20) +(((y*8)+x)>>1);
  dat = ram[base];
  ldat = dat;
  if( (x&1)==0) {

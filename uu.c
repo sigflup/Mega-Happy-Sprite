@@ -48,8 +48,8 @@
 #include <unistd.h>
 
 static const char *infile, *outfile;
-static FILE *infp, *outfp;
-static int base64, cflag, iflag, oflag, pflag, rflag, sflag;
+static FILE *infp;
+static int base64, rflag;
 
 static int	decode(char *name);
 static int	decode2(char *name);
@@ -74,6 +74,7 @@ int out_char(char in) {
  if(buffer_pos>0xffff)
   return 0;
  buffer[buffer_pos++] = in;
+ return 0;
 }
 
 int uudec(char *filename, char *name) {
@@ -106,12 +107,9 @@ decode(char *name)
 static int
 decode2(char *name)
 {
-	int flags, fd, mode;
-	size_t n, m;
+	int mode;
+	size_t n;
 	char *p, *q;
-	void *handle;
-	struct passwd *pw;
-	struct stat st;
 	char buf[MAXPATHLEN];
 
 	base64 = 0;
@@ -243,6 +241,7 @@ uu_decode(void)
 	case 1:
 		return (1);
 	}
+ return 0;
 }
 
 
@@ -261,11 +260,7 @@ int in_read(char *out_buf, int len) {
 
 int uuenc(FILE *fp, char *name, unsigned char *buf, int len)
 {
-	struct stat sb;
 	int base64;
-	int ch;
-	char *outfile;
-	extern char *__progname;
 
 	base64 = 0;
 	output = fp;
@@ -273,9 +268,9 @@ int uuenc(FILE *fp, char *name, unsigned char *buf, int len)
 	in_name = name;
 	in_pos = 0;
 	in_len = len;
-	in_buf = buf;
+	in_buf = (char *)buf;
 	encode();	
-
+	return 0;
 }
 /* ENC is the basic 1 character encoding function to make a char printing */
 #define	ENC(c) ((c) ? ((c) & 077) + ' ': '`')

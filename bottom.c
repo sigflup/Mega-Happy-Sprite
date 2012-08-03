@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#ifndef WINDOWS 
+ #include <unistd.h>
+#endif
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -66,6 +69,7 @@ int go_bot(struct object_t *obj, int data) {
  UPDATE_OBJECT(pattern_edit_object);
  MESSAGE_OBJECT(obj, MSG_DRAW);
  UPDATE_OBJECT(obj);
+ return RET_OK;
 }
 
 int new_bot(struct object_t *obj, int data) {
@@ -86,6 +90,7 @@ int new_bot(struct object_t *obj, int data) {
 
  MESSAGE_OBJECT(obj, MSG_DRAW);
  UPDATE_OBJECT(obj);
+ return RET_OK;
 }
 
 int stop_bot(struct object_t *obj, int data) {
@@ -151,7 +156,7 @@ int load_save_bottom(struct select_file_t *selector, char *filename) {
    }
    return LOAD_OK_QUIT;
   case SAVE_CRAM_HEAD:
-   if(FP = fopen(filename, "wb")) {
+   if((FP = fopen(filename, "wb"))) {
     fprintf(FP, "const color_t color[]={\n"); 
     for(q=0;q<64;q++) {
      fprintf(FP," {%d, %d, %d},\n", current_vdp->palette[q/16][q%16].r/ (0xff/7), 
@@ -171,12 +176,12 @@ int load_save_bottom(struct select_file_t *selector, char *filename) {
    }
    return LOAD_OK_QUIT;
  }
+ return LOAD_OK_QUIT;
 }
 
 int load_save_middle(struct object_t *obj, int data) {
  void *old_tick = 0;
  gui_timer_t *blinky = 0;
- group_t *store = 0;
 
  switch(obj->param.user_flags) {
   case LOAD_VRAM:
@@ -276,7 +281,6 @@ int change_bg_color(struct object_t *obj, int data) {
 }
 
 int knob_tick(struct object_t *obj, int data) {
- int i=0;
  if(obj->param.user_flags == SELECT_A) {
   knob_ab = SELECT_A;
   if(knob_or == HORIZONTAL) 
@@ -362,32 +366,32 @@ int edit_change(struct object_t *obj, int data) {
      select_object->param.d1= FALSE;
      MESSAGE_OBJECT(select_object, MSG_DRAW);
      UPDATE_OBJECT(select_object);
-     last_tool = -1;
+     last_tool = (struct object_t *)-1;
      break;
     case PIC_PAT:
      pic_pat_object->param.d1= FALSE;
      MESSAGE_OBJECT(pic_pat_object, MSG_DRAW);
      UPDATE_OBJECT(pic_pat_object);
-     last_tool = -1;
+     last_tool = (struct object_t *)-1;
      break;
     case PUT_PAT:
      put_pat_object->param.d1= FALSE;
      MESSAGE_OBJECT(put_pat_object, MSG_DRAW);
      UPDATE_OBJECT(put_pat_object);
-     last_tool = -1;
+     last_tool = (struct object_t *)-1;
      break;
     case FLIP:
      flip_object->param.d1= FALSE;
      MESSAGE_OBJECT(flip_object, MSG_DRAW);
      UPDATE_OBJECT(flip_object);
-     last_tool = -1;
+     last_tool = (struct object_t *)-1;
      break;
     case HI_LOW:
     case PUT_PAL:
      pal_hi_low_object->param.d1= FALSE;
      MESSAGE_OBJECT(pal_hi_low_object, MSG_DRAW);
      UPDATE_OBJECT(pal_hi_low_object);
-     last_tool = -1;
+     last_tool = (struct object_t *)-1;
      break;
 
 
@@ -464,7 +468,7 @@ int tool_change(struct object_t *obj, int data) {
    obj->param.d1 = FALSE; \
    MESSAGE_OBJECT(obj, MSG_DRAW); \
    UPDATE_OBJECT(obj); \
-   if(last_tool != -1) { \
+   if(last_tool != (struct object_t *)-1) { \
     last_tool->param.d1 = TRUE; \
     MESSAGE_OBJECT(last_tool, MSG_DRAW); \
     UPDATE_OBJECT(last_tool); \
@@ -544,6 +548,7 @@ int tool_change(struct object_t *obj, int data) {
    current_tool = HI_LOW; 
   return RET_OK;
  }
+ return RET_OK;
 }
 
 int change_background(struct object_t *obj, int data) {
@@ -552,6 +557,7 @@ int change_background(struct object_t *obj, int data) {
 // background_object->param.dp1 = (char *)"b2.jpg";
 // MESSAGE_OBJECT(background_object,MSG_RELOAD);
  broadcast_group(main_grp,MSG_DRAW,0);
+ return RET_OK;
 }
 
 int load_background_callback(struct select_file_t *selector, char *filename) {
@@ -587,7 +593,7 @@ int undo_button(struct object_t *obj, int data) {
  undo();
 
  render_vdp(0,vdp_h); 
- broadcast_group(current_grp,MSG_DRAW,NULL);
+ broadcast_group(current_grp,MSG_DRAW,0);
  return RET_OK;
 }
 
@@ -606,6 +612,7 @@ int really_quit(struct object_t *obj, int data) {
 
 int fw_bottom(struct object_t *obj, int data) {
  SDL_WM_ToggleFullScreen(gui_screen); 
+ return RET_OK;
 }
 
 int sprite_overlay(struct object_t *obj, int data) {

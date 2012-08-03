@@ -130,9 +130,9 @@ STOP_ENTRY (\x20*0x{HEX}+\x20*\,*)
 {HEAD}tv_type{IS}("NTSC"|"PAL"){TAIL} {
  SCAN_STRING(c);
  if(strncmp(c,"NTSC", BUF_LEN)==0)
-  current_vdp->tv_type == NTSC;
+  current_vdp->tv_type = NTSC;
  else
-  current_vdp->tv_type == PAL;
+  current_vdp->tv_type = PAL;
 }
 
 {HEAD}cell_w{IS}{DIGIT}+{TAIL} {

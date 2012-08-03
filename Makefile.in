@@ -1,6 +1,6 @@
 CC = cc
 LEX = lex
-CFLAGS = -I./gui/ `sdl-config --cflags` -O2 -w -ggdb -DDOXRANDR -m32
+CFLAGS = -I./gui/ `sdl-config --cflags` -O2 -Wall -ggdb -DDOXRANDR -m32
 LIBS= `sdl-config --libs` -O2 -ggdb -lSDL_image ./gui/libgui.a -m32
 
 OBJS = draw.o mega.o proc.o vdp.o bottom.o lex.yy.o uu.o gui/libgui.a

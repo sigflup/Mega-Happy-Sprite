@@ -66,7 +66,6 @@ int quit_proc(int msg, struct object_t *obj, int data) {
 
 group_t *new_menu(int x, int y, struct menu_entry_t *root, color_t *fg, color_t *bg) {
  group_t *new;
- struct object_t *tmp_object;
  obj_param_t tmp_parm;
  int w, h;
  int i,j;

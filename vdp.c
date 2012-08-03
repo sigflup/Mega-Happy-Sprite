@@ -156,14 +156,14 @@ int new_pattern(Uint8 *pixels, int index, int *pat) {
 }
 
 void collapse(void) {
- scroll_data_t *scroll_data;
- int table_offset;
+ scroll_data_t *scroll_data = (scroll_data_t *)0;
+ int table_offset=0;
  int i,j;
- int index;
+ int index=0;
  int num;
  int pat;
  int found;
- int x,y;
+ int x=0,y=0;
  int store;
  pat_bin_num = 0;
  if(clob_object->param.d1 == TRUE) {
@@ -242,7 +242,6 @@ void render_sprite(void) {
  int dst_x, dst_y, dst_i;
  int src_x, src_y;
  int pal, data;
- int w = (sprite_width+1)*8,h= (sprite_height+1)*8;
  vdp_pixel over_screen[32*32];
  unsigned char r,g,b;
  unsigned char r2,g2, b2;
@@ -321,8 +320,8 @@ void render_vdp(int start, int end) {
  int x_offset=0, y_offset=0;
  unsigned int scroll_data;
  int scroll_x, scroll_y;
- int data,pal, flags;
- int off, top, pic_top;
+ int data=0,pal=0;
+ int off, top, pic_top=0;
 
  int a_index;
  int a_pattern_data;
@@ -551,7 +550,6 @@ void render_vdp(int start, int end) {
 int vdp_init(void) {
  Uint8 cram_buffer[128];
  int i;
- FILE *fp;
 
  current_vdp = (vdp_t *)malloc(sizeof(vdp_t));
 
@@ -600,5 +598,6 @@ int vdp_init(void) {
 
  vdp_w = (current_vdp->cell_w == 40 ? 320 : 256);
  vdp_h = (current_vdp->tv_type == NTSC ? 224 : 240);
+ return 1;
 }
 

@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <SDL.h>
+#include <SDL_image.h>
 #include "./gui/libgui.h"
 #include "config.h"
 #include "mega.h"
@@ -123,7 +124,7 @@ struct menu_entry_t load_menu[] = {
  {"  VRAM  Binary   ", CALL_BUTTON, LOAD_VRAM,  load_save_middle},
  {"  VSRAM Binary   ", CALL_BUTTON, LOAD_VSRAM, load_save_middle},
  {"  CRAM  Binary   ", CALL_BUTTON, LOAD_CRAM,  load_save_middle},
- {NULL,NULL,NULL,NULL}
+ {(char *)NULL,(int)NULL,(int)NULL,NULL}
 };
 
 struct menu_entry_t save_menu[] = {
@@ -133,32 +134,32 @@ struct menu_entry_t save_menu[] = {
  {"  CRAM  Binary   ", CALL_BUTTON, SAVE_CRAM,  load_save_middle},
  {"  CRAM  Text     ", CALL_BUTTON, SAVE_CRAM_HEAD, load_save_middle},
 /* {"  LOAD MESSAGE   ", CALL_BUTTON, CHANGE_LOAD_MESSAGE, load_save_middle},*/
- {NULL,NULL,NULL,NULL}
+ {(char *)NULL,(int)NULL,(int)NULL,NULL}
 };
 
 struct menu_entry_t high_low_menu[] = {
  {" HIGH ", CALL_BUTTON,HIGH,high_low_menu_bot},
  {" LOW  ", CALL_BUTTON,LOW, high_low_menu_bot},
- {NULL,NULL,NULL,NULL}
+ {(char *)NULL,(int)NULL,(int)NULL,NULL}
 };
 
 struct menu_entry_t horizontal_vertical_menu[] = {
  {" HORIZONTAL ", CALL_BUTTON, HORIZONTAL, hor_ver_menu_bot},
  {" VERTICAL   ", CALL_BUTTON, VERTICAL, hor_ver_menu_bot},
- {NULL,NULL,NULL,NULL}
+ {(char *)NULL,(int)NULL,(int)NULL,NULL}
 };
 
 struct menu_entry_t pal_hi_low_menu[] = {
  {" PALETTE ", CALL_BUTTON, PALETTE, pal_hi_low_menu_bot},
  {"  HIGH   ", CALL_BUTTON, HIGH, pal_hi_low_menu_bot},
  {"  LOW    ", CALL_BUTTON, LOW,  pal_hi_low_menu_bot},
- {NULL, NULL, NULL, NULL}
+ {(char *)NULL, (int)NULL, (int)NULL, NULL}
 };
 
 struct menu_entry_t copy_move_menu[] = {
  {" COPY ", CALL_BUTTON, COPY, copy_move_menu_bot},
  {" MOVE ", CALL_BUTTON, MOVE, copy_move_menu_bot},
- {NULL, NULL, NULL, NULL}
+ {(char *)NULL, (int)NULL, (int)NULL, NULL}
 };
 
 int load_ovr(char *filename) {
@@ -171,7 +172,7 @@ int load_ovr(char *filename) {
  if( filename != NULL)
   tmp_surface = IMG_Load(filename);
  else
-  tmp_surface = IMG_ReadXPMFromArray(default_overlay_xpm);
+  tmp_surface = IMG_ReadXPMFromArray((char **)default_overlay_xpm);
 
  if(!tmp_surface) return -1;
 
@@ -277,7 +278,7 @@ void setup_windows(int flags) {
  tmp_parm.dp1 = back_xpm;
  background_object = new_obj(main_grp, &tmp_parm);
 
- PARM(82,22,NULL,NULL,&globl_fg,&globl_bg,
+ PARM(82,22,0,0,&globl_fg,&globl_bg,
    TOGGLE|CALL_BUTTON|SHOW_FOCUS|LOAD_XPM_FROM_ARRAY,proc_icon_button);
  tmp_parm.callback = undo_button;
  tmp_parm.d1 = FALSE;
@@ -288,7 +289,7 @@ void setup_windows(int flags) {
 
  /* tools */
 
- PARM(124, 22, NULL, NULL, &globl_fg, &globl_bg,
+ PARM(124, 22, 0, 0, &globl_fg, &globl_bg,
    CALL_BUTTON|SHOW_FOCUS|LOAD_XPM_FROM_ARRAY, proc_icon_button);
  tmp_parm.callback = tool_change;
  tmp_parm.d1 = FALSE;
@@ -296,7 +297,7 @@ void setup_windows(int flags) {
  tmp_parm.dp1 = select_xpm;
  select_object = new_obj(main_grp, &tmp_parm);
 
- PARM(82, 53, NULL, NULL, &globl_fg, &globl_bg,
+ PARM(82, 53, 0, 0, &globl_fg, &globl_bg,
    CALL_BUTTON|SHOW_FOCUS|LOAD_XPM_FROM_ARRAY, proc_icon_button);
  tmp_parm.callback = tool_change;
  tmp_parm.d1 = FALSE;
@@ -304,7 +305,7 @@ void setup_windows(int flags) {
  tmp_parm.dp1 = pal_hi_low_xpm;
  pal_hi_low_object = new_obj(main_grp, &tmp_parm);
 
- PARM(124, 53, NULL, NULL, &globl_fg, &globl_bg, 
+ PARM(124, 53, 0, 0, &globl_fg, &globl_bg, 
    CALL_BUTTON|SHOW_FOCUS|LOAD_XPM_FROM_ARRAY,proc_icon_button);
  tmp_parm.callback = tool_change;
  tmp_parm.d1 = FALSE;
@@ -313,7 +314,7 @@ void setup_windows(int flags) {
  flip_object = new_obj(main_grp, &tmp_parm);
  
 
- PARM(82,88,NULL,NULL,&globl_fg,&globl_bg,
+ PARM(82,88,0,0,&globl_fg,&globl_bg,
    CALL_BUTTON|SHOW_FOCUS|LOAD_XPM_FROM_ARRAY,proc_icon_button);
  tmp_parm.callback = tool_change;
  tmp_parm.d1 = TRUE;
@@ -322,7 +323,7 @@ void setup_windows(int flags) {
  line_object = new_obj(main_grp, &tmp_parm);
  last_tool = line_object;
 
- PARM(124,88,NULL,NULL,&globl_fg,&globl_bg,
+ PARM(124,88,0,0,&globl_fg,&globl_bg,
    CALL_BUTTON|SHOW_FOCUS|LOAD_XPM_FROM_ARRAY,proc_icon_button);
  tmp_parm.callback = tool_change;
  tmp_parm.d1 = FALSE;
@@ -330,7 +331,7 @@ void setup_windows(int flags) {
  tmp_parm.dp1 = put_pat_xpm;
  put_pat_object = new_obj(main_grp, &tmp_parm);
 
- PARM(82,123,NULL,NULL,&globl_fg,&globl_bg,
+ PARM(82,123,0,0,&globl_fg,&globl_bg,
    CALL_BUTTON|SHOW_FOCUS|LOAD_XPM_FROM_ARRAY,proc_icon_button); 
  tmp_parm.callback = tool_change;
  tmp_parm.d1 = FALSE;
@@ -338,7 +339,7 @@ void setup_windows(int flags) {
  tmp_parm.dp1 = fill_xpm;
  fill_object = new_obj(main_grp, &tmp_parm);
 
- PARM(124,123,NULL,NULL,&globl_fg,&globl_bg,
+ PARM(124,123,0,0,&globl_fg,&globl_bg,
    CALL_BUTTON|SHOW_FOCUS|LOAD_XPM_FROM_ARRAY,proc_icon_button);
  tmp_parm.callback = tool_change;
  tmp_parm.d1 = FALSE;
@@ -347,7 +348,7 @@ void setup_windows(int flags) {
  clear_to_color_object = new_obj(main_grp, &tmp_parm);
 
 
- PARM(82,158,NULL,NULL,&globl_fg,&globl_bg,
+ PARM(82,158,0,0,&globl_fg,&globl_bg,
    CALL_BUTTON|SHOW_FOCUS|LOAD_XPM_FROM_ARRAY,proc_icon_button); 
  tmp_parm.callback = tool_change;
  tmp_parm.d1 = FALSE;
@@ -355,7 +356,7 @@ void setup_windows(int flags) {
  tmp_parm.dp1 = pic_xpm;
  pic_object = new_obj(main_grp, &tmp_parm);
 
- PARM(124,158,NULL,NULL,&globl_fg,&globl_bg,
+ PARM(124,158,0,0,&globl_fg,&globl_bg,
    CALL_BUTTON|SHOW_FOCUS|LOAD_XPM_FROM_ARRAY,proc_icon_button); 
  tmp_parm.callback = tool_change;
  tmp_parm.d1 = FALSE;
@@ -410,7 +411,7 @@ void setup_windows(int flags) {
  tmp_parm.callback = change_background;
  new_obj(main_grp, &tmp_parm);
 
- PARM(425,81,NULL,NULL,&globl_fg,&globl_bg,
+ PARM(425,81,0,0,&globl_fg,&globl_bg,
    CALL_BUTTON|SHOW_FOCUS|LOAD_XPM_FROM_ARRAY,proc_icon_button);
  tmp_parm.callback = preview_zoom_change;
  tmp_parm.d1 = FALSE;
@@ -418,7 +419,7 @@ void setup_windows(int flags) {
  tmp_parm.dp1 = zoom_out_xpm;
  preview_zoom_out = new_obj(main_grp,&tmp_parm);
 
- PARM(461,81,NULL,NULL,&globl_fg,&globl_bg,
+ PARM(461,81,0,0,&globl_fg,&globl_bg,
    CALL_BUTTON|SHOW_FOCUS|LOAD_XPM_FROM_ARRAY,proc_icon_button);
  tmp_parm.callback = preview_zoom_change;
  tmp_parm.d1 = FALSE;
@@ -900,7 +901,7 @@ int main(int argc, char **argv) {
   if(strncmp("-f", argv[i], 3)==0) 
    flags = FULLSCREEN;
   else
-   if(argv[i]!='-'){
+   if(argv[i][0]!='-'){
     load_initial = TRUE;
     load_initial_name = strdup(argv[i]);
    }
@@ -937,4 +938,5 @@ int main(int argc, char **argv) {
  printf("\n        Thank you for using Mega-Happy-Sprite!\n"
         "**Call 24-hours a day, 2 nodes, door-games and more!**\n"
 	"              your friendly sysop\n\n");
+ return 0;
 }

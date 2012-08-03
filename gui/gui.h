@@ -57,7 +57,7 @@ Hash: SHA1
 #define RET_QUIT	0
 #define RET_OK		1
 
-#define MESSAGE_OBJECT(q,x) q->param.proc(x, q, NULL)
+#define MESSAGE_OBJECT(q,x) q->param.proc(x, q, 0)
 
 #define MAP_COLOR(W) \
  W.map = SDL_MapRGB(gc->format,W.r, W.g, W.b);
@@ -88,6 +88,8 @@ typedef struct {
 
 extern color_t globl_fg, globl_bg;
 extern color_t globl_move_color;
+
+struct object_t declair;
 
 typedef struct {
  int (*proc)(int MSG, struct object_t *obj, int data);

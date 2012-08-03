@@ -47,8 +47,8 @@ struct select_file_t {
  struct object_t *scroll_bar;
  struct object_t *name_object;
 };
-
-
+void read_dir(struct select_file_t *selector); 
+int line_edit(int msg, struct object_t *obj, int data);
 void do_overlay_window(struct select_file_t *selector);
 struct select_file_t *setup_overlay_window(int w, int h, int type, char *file_type_name, 
   int (*load_proc)(struct select_file_t *selector, char *filename));

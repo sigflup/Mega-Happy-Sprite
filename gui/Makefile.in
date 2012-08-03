@@ -1,5 +1,5 @@
 
-CFLAGS= -I./ `sdl-config --cflags` -w -m32 -ggdb
+CFLAGS= -I./ `sdl-config --cflags` -Wall -m32 -ggdb
 CC = cc
 INSTALL= install
 AR = ar

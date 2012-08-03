@@ -33,14 +33,14 @@
 			MESSAGE_OBJECT(bg_color_box, MSG_DRAW);\
                         MESSAGE_OBJECT(preview_object, MSG_DRAW)
 
-#define DRAW_RGB_CHOOSER	current_color_object->param.proc(MSG_DRAW,current_color_object,NULL);\
+#define DRAW_RGB_CHOOSER	current_color_object->param.proc(MSG_DRAW,current_color_object,0);\
  				current_color_text_object->param.proc(MSG_DRAW,\
-				  current_color_text_object,NULL); \
+				  current_color_text_object,0); \
 				current_color_text2_object->param.proc(MSG_DRAW, \
-				  current_color_text2_object,NULL); \
-                                rgb_red_object->param.proc(MSG_DRAW,rgb_red_object,NULL); \
-				rgb_green_object->param.proc(MSG_DRAW,rgb_green_object,NULL); \
-                                rgb_blue_object->param.proc(MSG_DRAW,rgb_blue_object,NULL)
+				  current_color_text2_object,0); \
+                                rgb_red_object->param.proc(MSG_DRAW,rgb_red_object,0); \
+				rgb_green_object->param.proc(MSG_DRAW,rgb_green_object,0); \
+                                rgb_blue_object->param.proc(MSG_DRAW,rgb_blue_object,0)
 
 typedef struct {
  int x, y;
@@ -77,7 +77,7 @@ void change_color(int palette, int index);
 int preview_scroll_change(struct object_t *obj, int data);
 int preview_zoom_change(struct object_t *obj, int data);
 
-void preview_size_change(void);
+int preview_size_change(struct object_t *obj, int data);
 
 int proc_info(int msg, struct object_t *obj, int data);
 int select_quit_on_click(int msg, struct object_t *obj, int data);

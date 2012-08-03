@@ -31,7 +31,7 @@ Hash: SHA1
 
 extern SDL_Surface *gc;
 
-void clipped_udate(int x, int y, int w, int h);
+void clipped_update(int x, int y, int w, int h);
 int vline(int rx, int ry, int ry2, color_t *fg, color_t *bg, int type);
 int hline(int rx, int ry, int rx2, color_t *fg, color_t *bg, int type);
 int other_hline(int rx, int ry, int rx2, color_t *fg, color_t *bg, int type);

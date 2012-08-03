@@ -41,7 +41,7 @@ typedef struct {
 
 typedef struct {
  int num;
- int px[64], py[64]
+ int px[64], py[64];
 } pixel_dump_t;
 
 pixel_dump_t pat_pix_a[4096];

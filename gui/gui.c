@@ -114,6 +114,7 @@ int broadcast_group(group_t *grp, int msg, int data) {
  }
  if(globl_dirt == 1) 
   clipped_update(grp->pos_x, grp->pos_y, grp->w, grp->h);
+ return 0;
 }
 
 int wait_on_mouse(void) {
@@ -163,7 +164,6 @@ int group_loop(group_t *grp) {
  unsigned char *save_buf, *pix;
  int i;
  int key, modstate;
- int tmp1, tmp2;
  int clip_x, clip_y, clip_w, clip_h;
  SDL_Event event;
  struct object_t *walker;
@@ -174,7 +174,7 @@ int group_loop(group_t *grp) {
 
 
  if((grp->pos_x > gui_screen->w) ||
-    (grp->pos_y > gui_screen->h) ) return;
+    (grp->pos_y > gui_screen->h) ) return 0;
 
  if(CHECK_FLAG(grp->flags, DROP_SHADOW) == TRUE &&
     CHECK_FLAG(grp->flags, DROP_SHADOW_READY) == FALSE) {
@@ -235,7 +235,7 @@ int group_loop(group_t *grp) {
 
  
  if(grp->ready == 0) {
-  broadcast_group(grp, MSG_START, NULL);
+  broadcast_group(grp, MSG_START, 0);
   grp->ready = 1;
  }
 
@@ -257,7 +257,7 @@ int group_loop(group_t *grp) {
     }
    }
 
- broadcast_group(grp, MSG_DRAW, NULL);
+ broadcast_group(grp, MSG_DRAW, 0);
 
  clipped_update(0,0,0,0);
 
@@ -282,15 +282,15 @@ int group_loop(group_t *grp) {
 	  gui_mouse_y < (grp->pos_y + walker->param.y + walker->param.h)) {
 	if(walker->in_focus == FALSE) {
 	 walker->in_focus = TRUE;
-	 if(walker->param.proc(MSG_INFOCUS, walker, NULL) == RET_QUIT) 
+	 if(walker->param.proc(MSG_INFOCUS, walker, 0) == RET_QUIT) 
 	  goto done1;
 	} else
-	 if(walker->param.proc(MSG_MOUSEMOVE,walker,NULL) == RET_QUIT)
+	 if(walker->param.proc(MSG_MOUSEMOVE,walker,0) == RET_QUIT)
 	  goto done1;
        } else
 	if(walker->in_focus == TRUE) {
 	 walker->in_focus = FALSE;
-	 if(walker->param.proc(MSG_OUTFOCUS, walker, NULL) == RET_QUIT)
+	 if(walker->param.proc(MSG_OUTFOCUS, walker, 0) == RET_QUIT)
 	  goto done1;
 	}
 
@@ -307,15 +307,15 @@ int group_loop(group_t *grp) {
       if(walker->in_focus == TRUE) {
        if(event.type == SDL_MOUSEBUTTONDOWN) {
 	walker->clicked = TRUE;
-	if(walker->param.proc(MSG_CLICK, walker, NULL) == RET_QUIT) 
+	if(walker->param.proc(MSG_CLICK, walker, 0) == RET_QUIT) 
 	 goto done1;
        } else {
 	if(walker->clicked == TRUE) { 
 	 walker->clicked = FALSE;
-	 if(walker->param.proc(MSG_PRESS, walker, NULL) == RET_QUIT)
+	 if(walker->param.proc(MSG_PRESS, walker, 0) == RET_QUIT)
 	  goto done1;
 	}
-	if(walker->param.proc(MSG_UNCLICK, walker, NULL) == RET_QUIT)
+	if(walker->param.proc(MSG_UNCLICK, walker, 0) == RET_QUIT)
 	 goto done1;
        }
       }
@@ -391,7 +391,7 @@ done1:
 
  free(save_buf);
 
- broadcast_group(current_grp, MSG_MOUSEMOVE,NULL);
+ broadcast_group(current_grp, MSG_MOUSEMOVE,0);
 
  current_grp = old_grp;
  if(globl_quit_value == MOVE_GROUP)  {
@@ -406,7 +406,7 @@ int destroy_group(group_t *grp) {
  struct object_t *walker;
  struct object_t *prev;
 
- broadcast_group(grp, MSG_DESTROY, NULL);
+ broadcast_group(grp, MSG_DESTROY, 0);
 
  walker = grp->objs;
  for(;;) {
@@ -415,7 +415,7 @@ int destroy_group(group_t *grp) {
   free(prev);
   if((int)walker == (int)grp->objs) break; 
  }
-
+ return 0;
 }
 
 int init_gui(int x,int y, int flags) {
@@ -423,16 +423,19 @@ int init_gui(int x,int y, int flags) {
  SDL_Init(SDL_INIT_TIMER|SDL_INIT_VIDEO);
  init_timers();
  globl_tick = default_tick;
- globl_wait_tick = -1;
+ globl_wait_tick = (void *)-1;
  sdl_flags = 0;
  if(CHECK_FLAG(flags,FULLSCREEN)== TRUE) sdl_flags |= SDL_FULLSCREEN;
 
- if(!(gui_screen = SDL_SetVideoMode(x, y, 24, sdl_flags)))
-  err(1,"could not get screen :(\n");
+ if(!(gui_screen = SDL_SetVideoMode(x, y, 24, sdl_flags))) {
+  printf("could not open screen: %s\n", SDL_GetError());
+  exit(0);
+ }
  SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
  gc = gui_screen;
  drop_init();
  lock_update = 0;
+ return 1;
 }
 /*
   Thank you for your attention

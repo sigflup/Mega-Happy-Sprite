@@ -41,7 +41,7 @@ Uint32 timer_callback(Uint32 interval) {
   globl_dirt = 0;
  } */ 
 
- if(globl_timer == -1) return interval;
+ if(globl_timer == (void *)-1) return interval;
  if(timer_lock == 1) return interval;
  walker = globl_timer;
  for(;;) {
@@ -56,14 +56,14 @@ Uint32 timer_callback(Uint32 interval) {
       walker->obj->param.proc(walker->msg, walker->obj, walker->data);
    }
   }
-  walker = walker->node.next;
+  walker = (gui_timer_t *)walker->node.next;
   if((int)walker == (int)globl_timer) break;
  }
  return interval;
 }
 
 void init_timers(void) {
- globl_timer = -1;
+ globl_timer = (void *)-1;
  timer_lock = 0;
  SDL_SetTimer( 20, timer_callback);
 }
@@ -71,7 +71,7 @@ void init_timers(void) {
 gui_timer_t *add_timer(struct object_t *obj, int reset, int msg, int data,group_t *parent,int flags) {
  gui_timer_t *new;
  timer_lock = 1;
- if(globl_timer == -1) {
+ if(globl_timer == (void *)-1) {
   globl_timer = (gui_timer_t *)malloc(sizeof(gui_timer_t) );
   INIT_LIST_HEAD(&globl_timer->node);
   new = globl_timer;
@@ -95,7 +95,7 @@ void del_timer(gui_timer_t *in) {
  list_del(&in->node);
  if((int)in == (int)globl_timer) {
   free(globl_timer);
-  globl_timer = -1;
+  globl_timer = (void *)-1;
  }
  timer_lock = 0;
 }

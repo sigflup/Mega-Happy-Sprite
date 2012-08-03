@@ -83,9 +83,9 @@ int vline(int rx, int ry, int ry2, color_t *fg, color_t *bg, int type) {
  } pix;
 
  if( (rx+ current_grp->pos_x) < 0) 
-  return; 
+  return 0; 
  if( (rx + current_grp->pos_x) >= gc->w)
-  return;
+  return 0;
  else
   x = rx;
  if( (ry+ current_grp->pos_y) < 0) 
@@ -138,6 +138,7 @@ int vline(int rx, int ry, int ry2, color_t *fg, color_t *bg, int type) {
 
  UNLOCK;
  globl_dirt = 1;
+ return 0;
 }
 
 int hline(int rx, int ry, int rx2, color_t *fg, color_t *bg, int type) {
@@ -155,10 +156,10 @@ int hline(int rx, int ry, int rx2, color_t *fg, color_t *bg, int type) {
   x = rx;
 
  if( (ry+ current_grp->pos_y) < 0 ) 
-  return;
+  return 0;
  
  if( (ry+current_grp->pos_y) >= gc->h) 
-   return;
+   return 0;
  else
   y = ry;
 
@@ -211,12 +212,13 @@ int hline(int rx, int ry, int rx2, color_t *fg, color_t *bg, int type) {
  }
  UNLOCK;
  globl_dirt = 1;
+ return 0;
 }
 
 
 int fill_box(int x, int y, int x2, int y2,color_t *fg,color_t *bg,int type){
- int rx, ry, rx2, ry2, i;
- int s,t,j, hash_start;
+ int rx, ry, rx2, ry2;
+ int s,t, hash_start;
  Uint32 mask;
  union {
   Uint8  *b;
@@ -224,10 +226,10 @@ int fill_box(int x, int y, int x2, int y2,color_t *fg,color_t *bg,int type){
  } pix;
 
  if((x+ current_grp->pos_x) >= gc->w)
-  return;
+  return 0;
 
  if((y+ current_grp->pos_y) >= gc->h)
-  return;
+  return 0;
 
  if((x+ current_grp->pos_x) < 0)  
   rx = current_grp->pos_x * -1;
@@ -311,6 +313,7 @@ int fill_box(int x, int y, int x2, int y2,color_t *fg,color_t *bg,int type){
  }
  UNLOCK;
  globl_dirt = 1;
+ return 0;
 }
 
 int box(int x, int y, int x2, int y2, color_t *fg, color_t *bg, int type) {
@@ -318,6 +321,7 @@ int box(int x, int y, int x2, int y2, color_t *fg, color_t *bg, int type) {
  vline(x2,y,y2, fg, bg,   type);
  hline(x,y, x2, fg, bg,   type);
  hline(x,y2,x2+1, fg, bg, type);
+ return 0;
 }
 
 
