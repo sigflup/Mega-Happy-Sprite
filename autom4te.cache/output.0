@@ -3404,7 +3404,7 @@ fi
 done
 
 
-ac_config_files="$ac_config_files Makefile gui/Makefile"
+ac_config_files="$ac_config_files Makefile gui/Makefile Makefile.windows gui/Makefile.windows"
 
 
  { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether byte ordering is bigendian" >&5
@@ -4340,6 +4340,8 @@ do
     "config.h") CONFIG_HEADERS="$CONFIG_HEADERS config.h" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
     "gui/Makefile") CONFIG_FILES="$CONFIG_FILES gui/Makefile" ;;
+    "Makefile.windows") CONFIG_FILES="$CONFIG_FILES Makefile.windows" ;;
+    "gui/Makefile.windows") CONFIG_FILES="$CONFIG_FILES gui/Makefile.windows" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
   esac

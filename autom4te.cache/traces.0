@@ -251,7 +251,7 @@ m4trace:configure.in:21: -1- AH_OUTPUT([HAVE_BZERO], [/* Define to 1 if you have
 @%:@undef HAVE_BZERO])
 m4trace:configure.in:21: -1- AC_DEFINE_TRACE_LITERAL([HAVE_BZERO])
 m4trace:configure.in:21: -1- m4_pattern_allow([^HAVE_BZERO$])
-m4trace:configure.in:23: -1- AC_CONFIG_FILES([Makefile gui/Makefile])
+m4trace:configure.in:23: -1- AC_CONFIG_FILES([Makefile gui/Makefile Makefile.windows gui/Makefile.windows])
 m4trace:configure.in:25: -1- AH_OUTPUT([WORDS_BIGENDIAN], [/* Define WORDS_BIGENDIAN to 1 if your processor stores words with the most
    significant byte first (like Motorola and SPARC, unlike Intel). */
 #if defined AC_APPLE_UNIVERSAL_BUILD

@@ -97,8 +97,7 @@ void load_palette(vdp_t *vdp, Uint8 *ram) {
   vdp->palette[q/16][q%16].r = ((a&0xe)>>1) * 	(0xff/7);
   vdp->palette[q/16][q%16].g = (((a>>4)&0xe)>>1) * 	(0xff/7);
   vdp->palette[q/16][q%16].b = ((b&0xe)>>1) * 	(0xff/7); 
-  if(gui_screen != 0) 
-   MAP_COLOR(vdp->palette[q/16][q%16]);
+  MAP_COLOR(vdp->palette[q/16][q%16]);
  }
 }
 
@@ -548,7 +547,6 @@ void render_vdp(int start, int end) {
 
 
 int vdp_init(void) {
- Uint8 cram_buffer[128];
  int i;
 
  current_vdp = (vdp_t *)malloc(sizeof(vdp_t));
@@ -590,12 +588,10 @@ int vdp_init(void) {
  vdp_zoom = 1;
  
  memset(current_vdp->vram,0,0xffff);
- memset(cram_buffer,0, 128);
  memset(current_vdp->vsram,0, 80);
  for(i=1;i<0x400;i++)
   pat_stop[i] = FALSE;
  pat_stop[0] = TRUE;
- load_palette(current_vdp, cram_buffer); 
 
  vdp_w = (current_vdp->cell_w == 40 ? 320 : 256);
  vdp_h = (current_vdp->tv_type == NTSC ? 224 : 240);

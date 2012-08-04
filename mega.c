@@ -891,6 +891,7 @@ static SDL_Cursor *cursor(const char *image[])
 
 
 int main(int argc, char **argv) {
+ Uint8 cram_buffer[128];
  int flags;
  int i;
  gui_screen = (SDL_Surface *)0;
@@ -908,6 +909,11 @@ int main(int argc, char **argv) {
  }
 
  setup_windows(flags);
+
+ /* now that we have gui_screen->format we can map colors */
+ memset(cram_buffer,0,128);
+ load_palette(current_vdp, cram_buffer);
+ 
 
  arrow = cursor(arrow_data);
  cross = cursor(cross_data);
