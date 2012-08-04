@@ -1,15 +1,24 @@
 
+.ifdef WINDOWS
+CFLAGS= -I./ -D_GNU_SOURCE=1 -Wall -ggdb
+CC = mingw32-gcc
+INSTALL= install
+AR = mingw32-ar
+RANLIB=mingw32-ranlib
+.else
 CFLAGS= -I./ `sdl-config --cflags` -Wall -ggdb
 CC = cc
 INSTALL= install
 AR = ar
-RANDLIB = ranlib
+RANLIB = ranlib
+.endif
+
 OBJS = draw.o font.o gui.o link.o std_dialog.o drop.o timer.o load_save.o menu.o
 
 libgui.a: ${OBJS}
 	rm -rf libgui.a
-	ar -q -v libgui.a ${OBJS} 
-	ranlib libgui.a
+	${AR} -q -v libgui.a ${OBJS} 
+	${RANLIB} libgui.a
 
 timer.o: timer.c ../config.h gui_types.h link.h gui.h std_dialog.h draw.h
 	${CC} -c timer.c ${CFLAGS}

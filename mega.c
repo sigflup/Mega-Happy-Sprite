@@ -935,8 +935,10 @@ int main(int argc, char **argv) {
 
  group_loop(main_grp);
  SDL_Quit();
+#ifndef WINDOWS
  printf("\n        Thank you for using Mega-Happy-Sprite!\n"
         "**Call 24-hours a day, 2 nodes, door-games and more!**\n"
 	"              your friendly sysop\n\n");
+#endif
  return 0;
 }

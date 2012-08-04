@@ -1,7 +1,16 @@
+
+.ifdef WINDOWS
+CC=mingw32-gcc
+LEX=lex
+CFLAGS= -I./gui/ -D_GNU_SOURCE=1 -O2 -Wall -DDOXRANDR
+LIBS= -Dmain=SDL_main -mwindows -lmingw32 -luser32 -lgdi32 -lwinmm -ldxguid -lSDLmain -lSDL /tmp/SDL_image.lib  -O2 ./gui/libgui.a
+.else
 CC = cc
 LEX = lex
 CFLAGS = -I./gui/ `sdl-config --cflags` -O2 -Wall -ggdb -DDOXRANDR
 LIBS= `sdl-config --libs` -O2 -ggdb -lSDL_image ./gui/libgui.a
+.endif
+
 
 OBJS = draw.o mega.o proc.o vdp.o bottom.o lex.yy.o uu.o gui/libgui.a
 
