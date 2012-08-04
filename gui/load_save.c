@@ -375,12 +375,10 @@ void read_dir(struct select_file_t *selector) {
 
  len = 0;
  while((dp = readdir(fd))>0) {
-  if(dp->d_fileno!=0) {
    for(i=0;;i++) {
     selector->text_lines[len][i] = dp->d_name[i];
     if(dp->d_name[i] == 0) break;
    }  
-  }
   len++;
  }
 

@@ -39,7 +39,6 @@
 
 #include <sys/param.h>
 #include <sys/stat.h>
-#include <err.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <stdio.h>
@@ -317,8 +316,10 @@ encode(void)
 		if (fputc('\n', output) == EOF)
 			break;
 	}
-	if (ferror(stdin))
-		errx(1, "read error");
+	if (ferror(stdin)) {
+	  printf("uu encode read error\n");
+	  exit(-1);
+	}	 
 	(void)fprintf(output, "%c\nend\n", ENC('\0'));
 }
 
