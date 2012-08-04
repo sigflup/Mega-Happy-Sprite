@@ -1,1 +1,6 @@
 
+To compile for windows run:
+
+./make -DWINDOWS
+
+this should produce mega.exe
