@@ -2,20 +2,22 @@
 .ifdef WINDOWS
 CC=mingw32-gcc
 LEX=lex
-CFLAGS= -I./gui/ -D_GNU_SOURCE=1 -O2 -Wall -DDOXRANDR
-LIBS= -Dmain=SDL_main -mwindows -lmingw32 -luser32 -lgdi32 -lwinmm -ldxguid -lSDLmain -lSDL /tmp/SDL_image.lib  -O2 ./gui/libgui.a
+CFLAGS= -I./gui/ -D_GNU_SOURCE=1 -O2 -Wall -DWINDOWS -DDOXRANDR
+LIBS= -Dmain=SDL_main -mwindows -lmingw32 -luser32 -lgdi32 -lwinmm -ldxguid -lSDLmain -lSDL -lSDL_image -O2 ./gui/libgui.a
+PROGNAME=mega.exe
 .else
 CC = cc
 LEX = lex
 CFLAGS = -I./gui/ `sdl-config --cflags` -O2 -Wall -ggdb -DDOXRANDR
 LIBS= `sdl-config --libs` -O2 -ggdb -lSDL_image ./gui/libgui.a
+PROGNAME=mega
 .endif
 
 
 OBJS = draw.o mega.o proc.o vdp.o bottom.o lex.yy.o uu.o gui/libgui.a
 
 mega: ${OBJS}
-	${CC} -o mega ${OBJS} ${LIBS}
+	${CC} -o ${PROGNAME}  ${OBJS} ${LIBS}
 
 lex.yy.o: lex.yy.c config.h mega_file.h
 	${CC} -c ${CFLAGS} lex.yy.c
