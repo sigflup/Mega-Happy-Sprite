@@ -588,9 +588,10 @@ int vdp_init(void) {
   vdp_y = 0;
 
  vdp_zoom = 1;
- bzero(current_vdp->vram,0xffff);
- bzero(cram_buffer, 128);
- bzero(current_vdp->vsram, 80);
+ 
+ memset(current_vdp->vram,0,0xffff);
+ memset(cram_buffer,0, 128);
+ memset(current_vdp->vsram,0, 80);
  for(i=1;i<0x400;i++)
   pat_stop[i] = FALSE;
  pat_stop[0] = TRUE;

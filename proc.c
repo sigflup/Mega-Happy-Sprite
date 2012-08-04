@@ -1171,7 +1171,7 @@ int proc_preview_object(int msg, struct object_t *obj, int data) {
         y2 < tmp_h) {	 
 
        num_xor_pix = 0;
-       bzero(draw_buffer, 320*240 * sizeof(Uint8));
+       memset(draw_buffer, 0, 320*240 * sizeof(Uint8));
      
        do_flood(0, 0, x2, y2, 0,0, tmp_w-1, tmp_h-1, put_pix_draw_buffer, get_pix_preview_special);
 
@@ -1793,7 +1793,7 @@ int proc_pattern_edit(int msg,struct object_t *obj, int data) {
      save_state();
      TOOL_PROLOG
       if(lx != x || ly != y) {
-       bzero(draw_buffer, 320 * 8);
+       memset(draw_buffer,0, 320 * 8);
        if(j == 0) {
 	x1 = x;
 	y1 = y;
@@ -1824,7 +1824,7 @@ int proc_pattern_edit(int msg,struct object_t *obj, int data) {
      save_state();
      TOOL_PROLOG
       if(lx!=x || ly != y) {
-       bzero(draw_buffer, 320 * 8);
+       memset(draw_buffer,0, 320 * 8);
        do_flood(current_vdp->vram,current_pattern,x,y,0,0,7,7,put_pix_draw_buffer,get_pix_special);
 #define REPEAT \
        for(sub_y=0;sub_y<8;sub_y++) \

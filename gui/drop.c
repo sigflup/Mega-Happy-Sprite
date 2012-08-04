@@ -233,7 +233,6 @@ drop_t *new_drop(int depth) {
  memset(&buffer[actual_w * (border/2)], 0x4f,  actual_w * (actual_h - border));
  
 
-// bzero(&buffer[actual_w * (border/2)],  actual_w * (actual_h - border));
  memset(&buffer[actual_w *(actual_h - (border/2))], 0xff, actual_w*(border/2)); 
 
  for(y = (border/2); y< actual_h - (border/2);y++ ) 

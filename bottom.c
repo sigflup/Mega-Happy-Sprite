@@ -81,7 +81,7 @@ int new_bot(struct object_t *obj, int data) {
   if( pat_stop[i] == FALSE &&
       pat_ref[i] == 0) {
    current_pattern = i;
-   bzero(&current_vdp->vram[i*0x20], 0x20);
+   memset(&current_vdp->vram[i*0x20],0, 0x20);
    break;
   }
  

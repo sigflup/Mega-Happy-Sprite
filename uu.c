@@ -160,7 +160,7 @@ getline2(char *buf, size_t size)
 		return (2);
 	if (rflag)
 		return (0);
-	warnx("%s: %s: short file", infile, outfile);
+	printf("%s: %s: short file", infile, outfile);
 	return (1);
 }
 
@@ -184,7 +184,7 @@ uu_decode(void)
 #define IS_DEC(c) ( (((c) - ' ') >= 0) && (((c) - ' ') <= 077 + 1) )
 
 #define OUT_OF_RANGE do {						\
-	warnx("%s: %s: character out of range: [%d-%d]",		\
+	printf("%s: %s: character out of range: [%d-%d]",		\
 	    infile, outfile, 1 + ' ', 077 + ' ' + 1);			\
 	return (1);							\
 } while (0)
