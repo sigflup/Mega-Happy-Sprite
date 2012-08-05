@@ -42,23 +42,35 @@ int fix_file(struct select_file_t *parent, char *filename) {
  struct stat qstat;
 
 
- if(parent->path[1] != 0) { 
-  if( parent->path[strlen(parent->path) - 1] != SLASH_CHAR) 
-   snprintf(new_path, BIGBUF, "%s%c%s", parent->path, SLASH_CHAR, filename);
-  else
+#ifdef WINDOWS
+ if(filename[1] == ':'  &&
+   (filename[2] == 0 | filename[2] == '\\'))  {
+  memcpy(new_path, filename, strlen(filename)+1); 
+ } else {
+#endif
+
+  if(parent->path[1] != 0) { 
+   if( parent->path[strlen(parent->path) - 1] != SLASH_CHAR) 
+    snprintf(new_path, BIGBUF, "%s%c%s", parent->path, SLASH_CHAR, filename);
+   else
+    snprintf(new_path, BIGBUF, "%s%s", parent->path, filename);
+  } else { 
+   if(strncmp("..", filename, 3) != 0)
    snprintf(new_path, BIGBUF, "%s%s", parent->path, filename);
- } else { 
-  if(strncmp("..", filename, 3) != 0)
-   snprintf(new_path, BIGBUF, "%s%s", parent->path, filename);
-  else {
-   parent->selected_line = -1;
-   cp = (char *)parent->name_object->param.dp1;
-   *cp = 0;
-   MESSAGE_OBJECT(parent->name_object, MSG_START);
-   MESSAGE_OBJECT(parent->name_object, MSG_DRAW);
-   return BREAKER;
+   else {
+    parent->selected_line = -1;
+    cp = (char *)parent->name_object->param.dp1;
+    *cp = 0;
+    MESSAGE_OBJECT(parent->name_object, MSG_START);
+    MESSAGE_OBJECT(parent->name_object, MSG_DRAW);
+    return BREAKER;
+   }
   }
+
+#ifdef WINDOWS
  }
+#endif
+
 
  realpath(new_path, tmp_buf);
  memcpy(new_path, tmp_buf, strlen(tmp_buf)+1);
