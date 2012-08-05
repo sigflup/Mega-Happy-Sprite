@@ -41,7 +41,6 @@ int fix_file(struct select_file_t *parent, char *filename) {
  int ret;
  struct stat qstat;
 
- printf("fix_file %s %s\n", filename, parent->path);
 
  if(parent->path[1] != 0) { 
   if( parent->path[strlen(parent->path) - 1] != SLASH_CHAR) 
@@ -93,7 +92,6 @@ int fix_file(struct select_file_t *parent, char *filename) {
  }
 
  if(S_ISDIR(qstat.st_mode) != 0) {
-  printf("is dir\n");
   if(strncmp(".", filename,2) == 0) {
    parent->selected_line = -1;
    cp = (char *)parent->name_object->param.dp1;
@@ -360,7 +358,6 @@ int text_hilight(int msg, struct object_t *obj, int data) {
 int selector_bot(struct object_t *obj, int data) {
  int i;
  struct select_file_t *parent;
- printf("selector_bot\n");
  parent = (struct select_file_t *)obj->param.dp1;
  for(i = 0; i<parent->nlines;i++) {
   parent->lines[i]->param.dp2 = (void *)parent->text_lines[i+ obj->param.d1];
@@ -383,7 +380,6 @@ void read_dir(struct select_file_t *selector) {
  DIR *fd;
  struct dirent *dp;
 
- printf("read_dir\n");
 
  len = 0;
  if((fd = opendir(selector->path))<=0) return;
