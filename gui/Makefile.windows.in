@@ -1,11 +1,11 @@
 
-CFLAGS= -I./ -D_GNU_SOURCE=1 -Wall -ggdb
+CFLAGS= -I./ -D_GNU_SOURCE=1 -Wall -DWINDOWS
 CC = mingw32-gcc
 INSTALL= install
 AR = mingw32-ar
 RANLIB=mingw32-ranlib
 
-OBJS = draw.o font.o gui.o link.o std_dialog.o drop.o timer.o load_save.o menu.o
+OBJS = realpath.o draw.o font.o gui.o link.o std_dialog.o drop.o timer.o load_save.o menu.o
 
 libgui.a: ${OBJS}
 	rm -rf libgui.a

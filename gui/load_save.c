@@ -21,6 +21,12 @@
 #include <sys/stat.h>
 #include "../config.h"
 
+#ifndef WINDOWS
+# define SLASH_CHAR '/'
+#else
+# define SLASH_CHAR '\\'
+#endif
+
 int do_load(struct select_file_t *selector, char *filename);
 int do_save(struct select_file_t *selector, char *filename);
 
@@ -31,12 +37,15 @@ int fix_file(struct select_file_t *parent, char *filename) {
  char *cp;
  int i;
  char new_path[BIGBUF];
- int fp;
+ char tmp_buf[BIGBUF];
+ int ret;
  struct stat qstat;
 
+ printf("fix_file %s %s\n", filename, parent->path);
+
  if(parent->path[1] != 0) { 
-  if( parent->path[strlen(parent->path) - 1] != '/') 
-   snprintf(new_path, BIGBUF, "%s/%s", parent->path, filename);
+  if( parent->path[strlen(parent->path) - 1] != SLASH_CHAR) 
+   snprintf(new_path, BIGBUF, "%s%c%s", parent->path, SLASH_CHAR, filename);
   else
    snprintf(new_path, BIGBUF, "%s%s", parent->path, filename);
  } else { 
@@ -52,13 +61,16 @@ int fix_file(struct select_file_t *parent, char *filename) {
   }
  }
 
- fp = open(new_path, O_RDONLY);
+ realpath(new_path, tmp_buf);
+ memcpy(new_path, tmp_buf, strlen(tmp_buf)+1);
+ 
+ ret = stat(new_path, &qstat);
 
  if(parent->type == LOAD){
-  if( fp < 0 )
+  if( ret < 0 )
    return BREAKER;
  } else {
-  if( fp < 0) {
+  if( ret < 0) {
    if(do_save(parent, new_path) == RET_QUIT)
     return QUITER;
    else
@@ -66,8 +78,6 @@ int fix_file(struct select_file_t *parent, char *filename) {
   }
  }
 
- fstat(fp, &qstat);
- close(fp);
  if(S_ISREG(qstat.st_mode) != 0) {
   if(parent->type == LOAD) {
    if( do_load(parent, new_path) == RET_QUIT)
@@ -81,7 +91,9 @@ int fix_file(struct select_file_t *parent, char *filename) {
    }
   }
  }
+
  if(S_ISDIR(qstat.st_mode) != 0) {
+  printf("is dir\n");
   if(strncmp(".", filename,2) == 0) {
    parent->selected_line = -1;
    cp = (char *)parent->name_object->param.dp1;
@@ -90,16 +102,17 @@ int fix_file(struct select_file_t *parent, char *filename) {
    MESSAGE_OBJECT(parent->name_object, MSG_DRAW);
    return BREAKER;
   } 
-  if(strncmp("..", filename,3) == 0) {
+ /* if(strncmp("..", filename,3) == 0) {
+   printf("here\n");
    for(i = strlen(new_path) - 4;;i--)
-    if(new_path[i] == '/') {
+    if(new_path[i] == SLASH_CHAR) {
      if(i != 0)
        new_path[i] = 0;
      else
        new_path[i+1] = 0;
      break;
    }
-  }
+  } */
   
   for(i=0;i<BIGBUF;i++) {
    parent->path[i] = new_path[i];
@@ -347,6 +360,7 @@ int text_hilight(int msg, struct object_t *obj, int data) {
 int selector_bot(struct object_t *obj, int data) {
  int i;
  struct select_file_t *parent;
+ printf("selector_bot\n");
  parent = (struct select_file_t *)obj->param.dp1;
  for(i = 0; i<parent->nlines;i++) {
   parent->lines[i]->param.dp2 = (void *)parent->text_lines[i+ obj->param.d1];
@@ -369,6 +383,7 @@ void read_dir(struct select_file_t *selector) {
  DIR *fd;
  struct dirent *dp;
 
+ printf("read_dir\n");
 
  len = 0;
  if((fd = opendir(selector->path))<=0) return;
@@ -533,7 +548,7 @@ struct select_file_t *setup_overlay_window(int w, int h, int type, char *file_ty
  new->name_object = new_obj(new->grp, &tmp_parm);
 
  PARM((w/2), 25, ((w-32)/8),0, &globl_fg, &globl_bg, MAX_CHARS, proc_ctext);
- tmp_parm.dp1 = (void *)new->path;
+ tmp_parm.dp1 = new->path;
  new_obj(new->grp, &tmp_parm);
 
  for(i=0;;i++) {

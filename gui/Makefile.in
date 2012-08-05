@@ -39,5 +39,5 @@ load_save.o: load_save.c ../config.h load_save.h
 menu.o: menu.c ../config.h menu.h
 
 clean:
-	rm -rf ${OBJS} libgui.a example
+	rm -rf ${OBJS} realpath.o libgui.a example
 
