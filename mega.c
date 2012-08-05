@@ -169,6 +169,7 @@ int load_ovr(char *filename) {
  int i=0;
  SDL_Surface *tmp_surface=0;
 
+
  if( filename != NULL)
   tmp_surface = IMG_Load(filename);
  else

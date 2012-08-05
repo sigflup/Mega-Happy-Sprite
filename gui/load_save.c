@@ -43,8 +43,8 @@ int fix_file(struct select_file_t *parent, char *filename) {
 
 
 #ifdef WINDOWS
- if(filename[1] == ':'  &&
-   (filename[2] == 0 | filename[2] == '\\'))  {
+ if((filename[1] == ':')  &&
+   ((filename[2] == 0) || (filename[2] == '\\')))  {
   memcpy(new_path, filename, strlen(filename)+1); 
  } else {
 #endif

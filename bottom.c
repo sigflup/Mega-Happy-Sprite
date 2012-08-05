@@ -574,10 +574,11 @@ int load_background_callback(struct select_file_t *selector, char *filename) {
 }
 
 int load_ovr_callback(struct select_file_t *selector, char *filename) {
- if(load_ovr(filename) == -1) 
+ if(load_ovr(filename) == -1) {
   return NOPE_TRY_AGAIN;
- else 
+ } else { 
   return LOAD_OK_QUIT;
+ }
 }
 
 int load_ovr_window(struct object_t *obj, int data) {
