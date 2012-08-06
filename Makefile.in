@@ -49,4 +49,4 @@ install: mega
 
 clean:
 	cd gui && make clean
-	rm -f mega mega.exe mega.core core help_text.h lex.yy.c ${OBJS}
+	rm -f mega mega.exe mega.core core help_text.h mega.res  lex.yy.c ${OBJS}

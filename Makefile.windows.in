@@ -4,18 +4,22 @@ LEX=lex
 CFLAGS= -I./gui/ -D_GNU_SOURCE=1 -O2 -Wall -DWINDOWS -DDOXRANDR
 LIBS= -Dmain=SDL_main -mwindows -lmingw32 -luser32 -lgdi32 -lwinmm -ldxguid -lSDLmain -lSDL -lSDL_image -O2 ./gui/libgui.a
 PROGNAME=mega.exe
+WINDRES=mingw32-windres
 
-
-OBJS = draw.o mega.o proc.o vdp.o bottom.o lex.yy.o uu.o gui/libgui.a
+OBJS = draw.o mega.o proc.o vdp.o bottom.o lex.yy.o uu.o gui/libgui.a mega.res
 
 mega: ${OBJS}
 	${CC} -o ${PROGNAME}  ${OBJS} ${LIBS}
+	cp ${PROGNAME} windows
 
 lex.yy.o: lex.yy.c config.h mega_file.h
 	${CC} -c ${CFLAGS} lex.yy.c
 
 lex.yy.c: mega_file.l config.h mega_file.h
 	${LEX} mega_file.l
+
+mega.res: mega.rc
+	${WINDRES} mega.rc -O coff -o mega.res
 
 uu.o: uu.c config.h
 	${CC} -c ${CFLAGS} uu.c
@@ -49,4 +53,4 @@ install: mega
 
 clean:
 	cd gui && make -f Makefile.windows clean
-	rm -f mega mega.exe mega.core core help_text.h lex.yy.c ${OBJS}
+	rm -f mega mega.exe mega.core core help_text.h lex.yy.c mega.res ${OBJS}
