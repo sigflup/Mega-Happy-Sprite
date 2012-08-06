@@ -21,6 +21,10 @@
 #include <sys/stat.h>
 #include "../config.h"
 
+#ifdef WINDOWS
+# include "realpath.h"
+#endif
+
 #ifndef WINDOWS
 # define SLASH_CHAR '/'
 #else
