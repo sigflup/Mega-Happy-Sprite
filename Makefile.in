@@ -38,11 +38,11 @@ bottom.o: bottom.c config.h bottom.h help_text.h
 gui/libgui.a:
 	cd gui && make
 
-help_text.h: MANUAL
+help_text.h: ABOUT 
 	echo "char help_text[] = {" > help_text.h
-	xxd -i < MANUAL >> help_text.h
+	xxd -i < ABOUT >> help_text.h
 	echo "};" >> help_text.h
-	printf "int help_text_len = %d;\n" `wc -c < MANUAL` >> help_text.h
+	printf "int help_text_len = %d;\n" `wc -c < ABOUT` >> help_text.h
 
 install: mega
 	install mega /usr/bin/mega

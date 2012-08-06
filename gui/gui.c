@@ -398,12 +398,16 @@ int destroy_group(group_t *grp) {
  broadcast_group(grp, MSG_DESTROY, 0);
 
  walker = grp->objs;
- for(;;) {
-  prev = walker;
-  walker = (struct object_t *)walker->node.next;
-  free(prev);
-  if(walker == (struct object_t *)grp->objs) break; 
+ if(walker != (struct object_t *)NULL) {
+  for(;;) {
+   prev = walker;
+   walker = (struct object_t *)walker->node.next;
+   if(walker==grp->objs) break;
+//   free(prev);
+  }
  }
+
+ free(grp);
  return 0;
 }
 

@@ -891,9 +891,10 @@ void scroll_text_window(int cent_x, int cent_y, int w, int h, char *text, int le
 
  group_loop(scroll_text_group);
 
+ destroy_group(scroll_text_group);
  free(scroll_text_lines);
  free(scroll_text_text);
- destroy_group(scroll_text_group);
+
 }
 
 void alert(int cent_x, int cent_y, char *message, char *ok_text) {

@@ -385,7 +385,7 @@ void setup_windows(int flags) {
 
  
  PARM(500,1,50,17,&globl_fg,&globl_bg,SHOW_FOCUS|CALL_BUTTON|DROP_SHADOW,proc_button_box);
- tmp_parm.dp1 = (void *)"Help";
+ tmp_parm.dp1 = (void *)"About";
  tmp_parm.callback = about;
  new_obj(main_grp, &tmp_parm);
 
