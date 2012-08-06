@@ -594,6 +594,10 @@ int undo_button(struct object_t *obj, int data) {
  undo();
 
  render_vdp(0,vdp_h); 
+ if(select_a_object->param.d1 == TRUE)
+  knob_tick(select_a_object, 0);
+ else
+  knob_tick(select_b_object, 0);
  broadcast_group(current_grp,MSG_DRAW,0);
  return RET_OK;
 }

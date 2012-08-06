@@ -103,6 +103,7 @@ extern struct object_t *pic_pat_object, *put_pat_object, *flip_object;
 extern struct object_t *clear_to_color_object, *pal_hi_low_object, *select_object;
 
 extern struct object_t *plus_object, *minus_object, *a_object, *b_object;
+extern struct object_t *select_a_object, *select_b_object;
 
 extern int sprite_overlay_pic;
 extern int a_pattern, b_pattern;

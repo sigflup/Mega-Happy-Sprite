@@ -113,6 +113,8 @@ struct object_t *pic_pat_object, *put_pat_object, *flip_object;
 struct object_t *clear_to_color_object, *pal_hi_low_object, *select_object;
 
 struct object_t *plus_object, *minus_object, *a_object, *b_object;
+struct object_t *select_a_object, *select_b_object;
+
 
 int sprite_overlay_pic = -1;
 int a_pattern=0, b_pattern=0;
@@ -630,7 +632,7 @@ void setup_windows(int flags) {
  tmp_parm.dp1 = (void *)scroll_a_edit_xpm;
  tmp_parm.callback = knob_tick;
  tmp_parm.user_flags = SELECT_A;
- new_obj(main_grp, &tmp_parm);
+ select_a_object = new_obj(main_grp, &tmp_parm);
 
  PARM(462, 423, 0,0, &globl_fg, &globl_bg, SHOW_FOCUS|CALL_BUTTON|LOAD_XPM_FROM_ARRAY,
    proc_icon_button);
@@ -642,7 +644,7 @@ void setup_windows(int flags) {
  new_obj(main_grp, &tmp_parm);
 
  tmp_parm.proc = load_default_mega;
- new_obj(main_grp, &tmp_parm);
+ select_b_object = new_obj(main_grp, &tmp_parm);
 
  PARM(172, 177, 0,0, &globl_fg, &globl_bg, SHOW_FOCUS|SINGLE_RADIO|LOAD_XPM_FROM_ARRAY,
    proc_icon_button);
