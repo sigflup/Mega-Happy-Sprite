@@ -52,6 +52,10 @@
  MAP_COLOR(W); \
 }
 
+#ifdef WINDOWS
+extern int gui_flags, gui_w, gui_h;
+#endif
+
 extern int globl_flags;
 extern int lock_update;
 extern int globl_dirt, globl_quit_value;

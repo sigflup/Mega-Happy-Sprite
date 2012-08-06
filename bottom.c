@@ -612,7 +612,13 @@ int really_quit(struct object_t *obj, int data) {
 }
 
 int fw_bottom(struct object_t *obj, int data) {
+#ifdef WINDOWS
+ gui_flags^=SDL_FULLSCREEN;
+ gui_screen = SDL_SetVideoMode(gui_w, gui_h, 24, gui_flags);
+ broadcast_group(main_grp, MSG_DRAW, 0);
+#else
  SDL_WM_ToggleFullScreen(gui_screen); 
+#endif
  return RET_OK;
 }
 

@@ -11,6 +11,9 @@
 #include "std_dialog.h"
 #include "timer.h"
 
+#ifdef WINDOWS
+int gui_flags, gui_w, gui_h;
+#endif
 SDL_Surface *gui_screen;
 
 void (*globl_tick)(void);
@@ -417,6 +420,12 @@ int init_gui(int x,int y, int flags) {
   printf("could not open screen: %s\n", SDL_GetError());
   exit(0);
  }
+#ifdef WINDOWS
+ gui_flags = sdl_flags;
+ gui_w = x;
+ gui_h = y;
+#endif
+
  SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
  gc = gui_screen;
  drop_init();
