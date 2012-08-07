@@ -13,14 +13,14 @@ int *gauss_fact;
 int gauss_sum;
 int gauss_width;
 
-long *gauss_coef;
+int *gauss_coef;
 
 drop_t *drops;
 
 int drop_start;
 
 void tack_line(int offset, int depth) {
- long a=0, b=0;
+ int a=0, b=0;
  int k=0;
  for(k = 0;k< depth; k++) {
    if(  (offset - (depth -1 ) + k) == offset) 
@@ -40,7 +40,7 @@ void build_coef(void) {
  j = 0;
  for(i = 0;i<MAX_DEPTH;i++)
   j+=i;
- gauss_coef = (long *)malloc(j * sizeof(long));
+ gauss_coef = (int *)malloc(j * sizeof(int));
  gauss_coef[0] = 1;
 
  j = 1;
