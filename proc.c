@@ -312,55 +312,93 @@ int select_special(int msg, struct object_t *obj, int data) {
  return RET_OK;
 }
 /*}}}*/
+/* update_zoom {{{ */
+void update_zoom(int in) {
+ float dx, dy;
+ int scene_w, scene_h; 
+ int off;
+ vdp_zoom = in; 
+ if(vdp_zoom < 1)
+  vdp_zoom=1;
+
+ if(currently_editing != EDIT_SPRITE) {
+  scene_w = vdp_w;
+  scene_h = vdp_h;
+  if(vdp_zoom !=1)  {
+   if((preview_x_scroll->param.d1 == 0 )&&
+      (preview_x_scroll->param.d2 == 0 )&&
+      (preview_y_scroll->param.d1 == 0 )&&
+      (preview_y_scroll->param.d2 == 0 )) {
+    dx = 0.5f;
+    dy = 0.5f;
+   } else {
+    dx = (float)preview_x_scroll->param.d1 / (float)preview_x_scroll->param.d2;
+    dy = (float)preview_y_scroll->param.d1 / (float)preview_y_scroll->param.d2;
+   }
+   if(dx > 1.0f)
+    dx = 1.0f;
+   if(dy > 1.0f)
+    dy = 1.0f;
+   preview_x_scroll->param.d2 = (scene_w - (scene_w/vdp_zoom))-1;
+   preview_y_scroll->param.d2 = (scene_h - (scene_h/vdp_zoom))-1;
+   if(currently_editing != EDIT_SPRITE) {
+    preview_x_scroll->param.d1 = (int)(dx*(float)(preview_x_scroll->param.d2));
+    preview_y_scroll->param.d1 = (int)(dy*(float)(preview_y_scroll->param.d2));
+   }
+   vdp_x = preview_x_scroll->param.d1;
+   vdp_y = preview_y_scroll->param.d1;
+  } else {
+   preview_x_scroll->param.d1 =
+    preview_x_scroll->param.d2 =
+     preview_y_scroll->param.d1 =
+      preview_y_scroll->param.d2 = 0;
+   vdp_x = 0;
+   vdp_y = 0;
+   }
+ } else {
+  scene_w = (sprite_width+1) *8;
+  scene_h = (sprite_height+1)*8;
+  
+
+  if((scene_w * vdp_zoom) > SPRITE_WIDTH) {
+   off = abs((SPRITE_WIDTH - (scene_w * vdp_zoom)) / vdp_zoom);
+   preview_x_scroll->param.d2 = off+1;
+   if(preview_x_scroll->param.d1>preview_x_scroll->param.d2)
+    preview_x_scroll->param.d1 = preview_x_scroll->param.d2; 
+   vdp_x = preview_x_scroll->param.d1;
+  } else {
+   preview_x_scroll->param.d1 = 0;
+   preview_x_scroll->param.d2 = 0;
+  } 
+
+  if((scene_h * vdp_zoom) > SPRITE_HEIGHT) {
+   off = abs((SPRITE_HEIGHT - (scene_h * vdp_zoom)) / vdp_zoom);
+   preview_y_scroll->param.d2 = off+1;
+   if(preview_y_scroll->param.d1>preview_y_scroll->param.d2)
+    preview_y_scroll->param.d1 = preview_y_scroll->param.d2; 
+   vdp_y = preview_y_scroll->param.d1;
+  } else {
+   preview_y_scroll->param.d1 = 0;
+   preview_y_scroll->param.d2 = 0;
+  }
+ }
+ DRAW_PREVIEW;
+
+ UPDATE_OBJECT( preview_x_scroll);
+ UPDATE_OBJECT( preview_y_scroll); 
+ return;
+}
+/* }}} */
 /*preview_zoom_change{{{*/
 int preview_zoom_change(struct object_t *obj, int data) {
- float dx, dy;
  UPDATE_OBJECT(obj);
  if(obj == preview_zoom_in) {
   preview_zoom_in->param.d1 = FALSE;
-  vdp_zoom++;
-  if(vdp_zoom == 2) {
-   if(currently_editing != EDIT_SPRITE) {
-    preview_x_scroll->param.d1 = vdp_w/4;
-    preview_y_scroll->param.d1 = vdp_h/4;
-   }
-   preview_x_scroll->param.d2 = (vdp_w - (vdp_w/vdp_zoom))-1;
-   preview_y_scroll->param.d2 = (vdp_h - (vdp_h/vdp_zoom))-1;
-   vdp_x = preview_x_scroll->param.d1;
-   vdp_y = preview_y_scroll->param.d1;
-   goto done;
-  }
+  update_zoom(vdp_zoom + 1);
  } else {
   preview_zoom_out->param.d1 = FALSE;
-  vdp_zoom--;
-  if(vdp_zoom < 1)
-   vdp_zoom++;
+  update_zoom(vdp_zoom -1);
  }
- if(vdp_zoom !=1)  {
-  dx = (float)preview_x_scroll->param.d1 / (float)preview_x_scroll->param.d2;
-  dy = (float)preview_y_scroll->param.d1 / (float)preview_y_scroll->param.d2;
-  if(dx > 1.0f || dy > 1.0f) {
-   printf("what the fuck\n");
-   exit(-1);
-  } 
-  preview_x_scroll->param.d2 = (vdp_w - (vdp_w/vdp_zoom))-1;
-  preview_y_scroll->param.d2 = (vdp_h - (vdp_h/vdp_zoom))-1;
-  if(currently_editing != EDIT_SPRITE) {
-   preview_x_scroll->param.d1 = (int)(dx * (float)(preview_x_scroll->param.d2));
-   preview_y_scroll->param.d1 = (int)(dy * (float)(preview_y_scroll->param.d2));
-  }
-  vdp_x = preview_x_scroll->param.d1;
-  vdp_y = preview_y_scroll->param.d1;
- } else {
-  preview_x_scroll->param.d1 =
-   preview_x_scroll->param.d2 =
-    preview_y_scroll->param.d1 =
-     preview_y_scroll->param.d2 = 0;
-  vdp_x = 0;
-  vdp_y = 0;
- }
-done:
- DRAW_PREVIEW;
  return RET_OK;
 }
 /*}}}*/
@@ -402,7 +440,6 @@ int preview_size_change(struct object_t *obj, int data) {
  return RET_OK;
 }
 /*}}}*/
-
 /*proc_sprite_size {{{ */
 int proc_sprite_size(int msg, struct object_t *obj, int data) {
  int i;
@@ -434,12 +471,14 @@ int proc_sprite_size(int msg, struct object_t *obj, int data) {
      if(x>=0 && x<=3 && y>=0 && y<=3) {
       sprite_width = x;
       sprite_height = y;
+      
       MESSAGE_OBJECT(sprite_size1, MSG_DRAW);
       proc_sprite_size(MSG_DRAW, obj, 0);
       UPDATE_OBJECT(sprite_size1);
       if(currently_editing == EDIT_SPRITE) {
        vdp_w = 8 * (sprite_width + 1);
        vdp_h = 8 * (sprite_height +1);
+       update_zoom(vdp_zoom);
        DRAW_PREVIEW;
       }
      }
@@ -451,8 +490,6 @@ int proc_sprite_size(int msg, struct object_t *obj, int data) {
 
 }
 /* }}} */
-
-
 /*proc_scroll_size{{{*/
 int proc_scroll_size(int msg, struct object_t *obj, int data) {
  int i;

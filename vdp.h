@@ -1,6 +1,8 @@
 #define	NTSC	0
 #define PAL	1
 
+#define SPRITE_WIDTH	320
+#define SPRITE_HEIGHT	240
 
 #define FLIP_X(q)	((q&8)>>3)
 #define FLIP_Y(q)	((q&16)>>4)
