@@ -37,6 +37,10 @@
  * Used with uuencode.
  */
 
+#ifdef WINDOWS 
+# include <windows.h>
+#endif 
+
 #include <sys/param.h>
 #include <sys/stat.h>
 #include <errno.h>
@@ -317,7 +321,11 @@ encode(void)
 			break;
 	}
 	if (ferror(stdin)) {
+#ifndef WINDOWS
 	  printf("uu encode read error\n");
+#else
+	  MessageBox(0,"uu encode read error", "uu.c",MB_OK);
+#endif
 	  exit(-1);
 	}	 
 	(void)fprintf(output, "%c\nend\n", ENC('\0'));

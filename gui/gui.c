@@ -1,3 +1,7 @@
+#ifdef WINDOWS
+# include <windows.h>
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -413,6 +417,9 @@ int destroy_group(group_t *grp) {
 
 int init_gui(int x,int y, int flags) {
  int sdl_flags;
+#ifdef WINDOWS
+ char buf[256];
+#endif
  SDL_Init(SDL_INIT_TIMER|SDL_INIT_VIDEO);
  init_timers();
  globl_tick = default_tick;
@@ -421,7 +428,12 @@ int init_gui(int x,int y, int flags) {
  if(CHECK_FLAG(flags,FULLSCREEN)== TRUE) sdl_flags |= SDL_FULLSCREEN;
 
  if(!(gui_screen = SDL_SetVideoMode(x, y, 24, sdl_flags))) {
+#ifndef WINDOWS
   printf("could not open screen: %s\n", SDL_GetError());
+#else
+  snprintf(buf, 256, "could not open screen: %s", SDL_GetError());
+  MessageBox(0, buf, "SDL_SetVideoMode", MB_OK);
+#endif
   exit(0);
  }
 #ifdef WINDOWS
