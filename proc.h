@@ -70,6 +70,7 @@ extern struct object_t *rgb_red_object,
 extern color_t red,green,blue;
 extern color_t current_color_text_color;
 
+extern int sprite_zoom, scroll_plane_zoom;
 
 void update_color_text(void);
 void change_color(int palette, int index);
@@ -93,4 +94,4 @@ int proc_pattern_edit(int msg, struct object_t *obj, int data);
 int proc_pattern_select(int msg, struct object_t *obj, int data);
 int proc_scroll_bar_special(int msg, struct object_t *obj, int data);
 int line_edit_wonked(int msg, struct object_t *obj, int data);
-
+void update_zoom(int in); 

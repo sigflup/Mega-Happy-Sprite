@@ -33,6 +33,8 @@ color_t current_color_text_color;
 coord_t selection_v1, selection_v2;
 Uint8 selection_buffer[320*240];
 
+int sprite_zoom = 0, scroll_plane_zoom=0;
+
 /*update_color_text{{{*/
 void update_color_text(void) {
  float luma;
@@ -322,6 +324,7 @@ void update_zoom(int in) {
   vdp_zoom=1;
 
  if(currently_editing != EDIT_SPRITE) {
+  scroll_plane_zoom = in;
   scene_w = vdp_w;
   scene_h = vdp_h;
   if(vdp_zoom !=1)  {
@@ -356,6 +359,7 @@ void update_zoom(int in) {
    vdp_y = 0;
    }
  } else {
+  sprite_zoom = in;
   scene_w = (sprite_width+1) *8;
   scene_h = (sprite_height+1)*8;
   

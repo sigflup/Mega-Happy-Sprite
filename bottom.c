@@ -355,12 +355,14 @@ int edit_change(struct object_t *obj, int data) {
    vdp_w = (current_vdp->cell_w == 40 ? 320 : 256);
    vdp_h = (current_vdp->tv_type == NTSC ? 224 : 240);
    currently_editing = obj->param.user_flags;
+   update_zoom(scroll_plane_zoom);
    DRAW_PREVIEW;
    return RET_OK;
   case EDIT_SPRITE:
    vdp_w = 8 * (sprite_width+1); 
    vdp_h = 8 * (sprite_height+1);
    currently_editing = obj->param.user_flags;
+   update_zoom(sprite_zoom);
    switch(current_tool) {
     case SELECT:
      select_object->param.d1= FALSE;
