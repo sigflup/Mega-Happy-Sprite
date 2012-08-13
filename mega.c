@@ -371,11 +371,12 @@ void setup_windows(int flags) {
 
  /* not tools */
 
+#ifndef WINDOWS
  PARM(580,450,50,17,&globl_fg,&globl_bg,SHOW_FOCUS|CALL_BUTTON|DROP_SHADOW,proc_button_box);
  tmp_parm.dp1 = (void *)"F/W";
  tmp_parm.callback = fw_bottom;
  new_obj(main_grp, &tmp_parm);
-
+#endif
 
  
  PARM(580,1,50,17,&globl_fg,&globl_bg,SHOW_FOCUS|CALL_BUTTON|DROP_SHADOW,proc_button_box);
