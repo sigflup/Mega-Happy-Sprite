@@ -373,6 +373,7 @@ void update_zoom(int in) {
   } else {
    preview_x_scroll->param.d1 = 0;
    preview_x_scroll->param.d2 = 0;
+   vdp_x = 0;
   } 
 
   if((scene_h * vdp_zoom) > SPRITE_HEIGHT) {
@@ -384,6 +385,7 @@ void update_zoom(int in) {
   } else {
    preview_y_scroll->param.d1 = 0;
    preview_y_scroll->param.d2 = 0;
+   vdp_y = 0;
   }
  }
  DRAW_PREVIEW;
