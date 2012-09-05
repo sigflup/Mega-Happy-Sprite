@@ -125,7 +125,7 @@ int load_save_bottom(struct select_file_t *selector, char *filename) {
   case LOAD_CRAM:
    fp = open(filename, O_RDONLY);
    fstat(fp, &qstat);
-   if(qstat.st_size != 128) {
+   if(qstat.st_size < 128) {
     close(fp);
     return NOPE_TRY_AGAIN;
    } else {
