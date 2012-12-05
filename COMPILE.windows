@@ -1,7 +1,7 @@
 
 To compile for windows run:
 
-./make -f Makefile.windows
+make -f Makefile.windows
 
 this should produce mega.exe in the windows directory
 from there you can run it

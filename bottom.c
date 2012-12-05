@@ -15,6 +15,7 @@
 #include "bottom.h"
 #include "mega_file.h"
 #include "help_text.h"
+#include "bmp.h"
 
 struct select_file_t *load_sel, *save_sel;
 struct object_t *last_tool;
@@ -209,6 +210,13 @@ int load_save_middle(struct object_t *obj, int data) {
    load_sel->usr_flags = LOAD;  
    load_sel->load_proc = load_save_mega; 
    snprintf(load_sel->file_type_name, 6, "mega");
+   do_overlay_window(load_sel);
+   need_update = 1;
+   break;
+  case LOAD_BMP:
+   load_sel->usr_flags = LOAD;  
+   load_sel->load_proc = load_bmp; 
+   snprintf(load_sel->file_type_name, 6, "bmp");
    do_overlay_window(load_sel);
    need_update = 1;
    break;

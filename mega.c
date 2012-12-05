@@ -125,6 +125,7 @@ struct menu_entry_t load_menu[] = {
  {"  VRAM  Binary   ", CALL_BUTTON, LOAD_VRAM,  load_save_middle},
  {"  VSRAM Binary   ", CALL_BUTTON, LOAD_VSRAM, load_save_middle},
  {"  CRAM  Binary   ", CALL_BUTTON, LOAD_CRAM,  load_save_middle},
+ {"  BMP   Binary   ", CALL_BUTTON, LOAD_BMP,  load_save_middle},
  {(char *)NULL,0,0,NULL}
 };
 

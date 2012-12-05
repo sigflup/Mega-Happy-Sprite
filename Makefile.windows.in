@@ -6,7 +6,7 @@ LIBS= -Dmain=SDL_main -mwindows -lmingw32 -luser32 -lgdi32 -lwinmm -ldxguid -lSD
 PROGNAME=mega.exe
 WINDRES=mingw32-windres
 
-OBJS = draw.o mega.o proc.o vdp.o bottom.o lex.yy.o uu.o gui/libgui.a mega.res
+OBJS = draw.o mega.o proc.o vdp.o bottom.o lex.yy.o uu.o bmp.o gui/libgui.a mega.res
 
 mega: ${OBJS}
 	${CC} -o ${PROGNAME}  ${OBJS} ${LIBS}

@@ -32,6 +32,7 @@
 #define LOAD_VRAM	1
 #define LOAD_HAPPY	4
 #define LOAD_VSRAM	5
+#define LOAD_BMP	10
 #define SAVE_CRAM	2
 #define SAVE_VRAM	3
 #define SAVE_HAPPY	6
