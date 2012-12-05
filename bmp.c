@@ -28,7 +28,13 @@ int load_bmp(struct select_file_t *selector, char *filename) {
 
  if(bmp->format->palette->ncolors > 15)
   return NOPE_TRY_AGAIN;
+
+ if(bmp->w > 320)
+  return NOPE_TRY_AGAIN;
  
+ if(bmp->h > 224)
+  return NOPE_TRY_AGAIN;
+
  for(i=0;i<15;i++) {
   r = bmp->format->palette->colors[i].r / (0xff/7);
   r*= (0xff/7);
