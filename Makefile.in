@@ -5,6 +5,10 @@ CFLAGS = -I./gui/ `sdl-config --cflags` -O2 -Wall -ggdb -DDOXRANDR
 LIBS= `sdl-config --libs` -O2 -ggdb -lSDL_image ./gui/libgui.a
 PROGNAME=mega
 
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Linux)
+    LIBS += -lm
+endif
 
 OBJS = draw.o mega.o proc.o vdp.o bottom.o lex.yy.o uu.o bmp.o gui/libgui.a
 
