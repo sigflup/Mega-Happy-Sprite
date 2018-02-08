@@ -1,3 +1,6 @@
+ifeq ($(PREFIX),)
+    PREFIX := /usr/bin
+endif
 
 CC = cc
 LEX = lex
@@ -49,7 +52,7 @@ help_text.h: ABOUT
 	printf "int help_text_len = %d;\n" `wc -c < ABOUT` >> help_text.h
 
 install: mega
-	install mega /usr/bin/mega
+	install mega $(DESTDIR)$(PREFIX)/mega
 
 clean:
 	cd gui && make clean
