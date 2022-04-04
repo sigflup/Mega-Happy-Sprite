@@ -1,4 +1,3 @@
-
 #define PARM(X,Y,W,H,FG,BG,FLAGS,PROC)	tmp_parm.x = X;\
 				        tmp_parm.y = Y; \
 					tmp_parm.w = W; \
@@ -56,6 +55,9 @@
 extern int gui_flags, gui_w, gui_h;
 #endif
 
+extern SDL_Window *win;
+extern SDL_Renderer *rend;
+
 extern int globl_flags;
 extern int lock_update;
 extern int globl_dirt, globl_quit_value;
@@ -75,7 +77,7 @@ typedef struct {
 extern color_t globl_fg, globl_bg;
 extern color_t globl_move_color;
 
-struct object_t declair;
+extern struct object_t declair;
 
 typedef struct {
  int (*proc)(int MSG, struct object_t *obj, int data);

@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../config.h"
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include "gui_types.h"
 #include "link.h"
 #include "drop.h"
@@ -15,9 +15,9 @@ int timer_lock;
 
 gui_timer_t *globl_timer;
 
-Uint32 timer_callback(Uint32 interval) {
+Uint32 timer_callback(Uint32 interval, void *a) {
  gui_timer_t *walker;
-
+ 
 /* if(globl_dirt == 1 || lock_update == 0) {
   clipped_update(0,0,0,0);
   globl_dirt = 0;
@@ -47,7 +47,7 @@ Uint32 timer_callback(Uint32 interval) {
 void init_timers(void) {
  globl_timer = (void *)-1;
  timer_lock = 0;
- SDL_SetTimer( 20, timer_callback);
+ SDL_AddTimer( 20, timer_callback, (void *)0);
 }
 
 gui_timer_t *add_timer(struct object_t *obj, int reset, int msg, int data,group_t *parent,int flags) {

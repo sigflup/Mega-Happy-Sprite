@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include "./gui/libgui.h"
 #include "config.h"
 #include "mega.h"
@@ -38,6 +38,10 @@ int current_pattern;
 
 int vdp_zoom, vdp_x, vdp_y;
 int ovr_zoom, ovr_x, ovr_y;
+
+pixel_dump_t pat_pix_a[4096];
+pixel_dump_t pat_pix_b[4096];
+
 
 
 void draw_pattern(Uint8 *ram, int num, int x, int y, int w, int h) {

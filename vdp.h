@@ -46,8 +46,8 @@ typedef struct {
  int px[64], py[64];
 } pixel_dump_t;
 
-pixel_dump_t pat_pix_a[4096];
-pixel_dump_t pat_pix_b[4096];
+extern pixel_dump_t pat_pix_a[4096];
+extern pixel_dump_t pat_pix_b[4096];
 
 typedef struct {
  int index;

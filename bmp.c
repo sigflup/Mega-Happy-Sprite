@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include <libgui.h>
 #include <math.h>
 #include "config.h"

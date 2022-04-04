@@ -6,7 +6,7 @@
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include "./gui/libgui.h"
 #include "config.h"
 #include "mega.h"
@@ -625,7 +625,10 @@ int really_quit(struct object_t *obj, int data) {
  return RET_OK;
 }
 
-int fw_bottom(struct object_t *obj, int data) {
+int fw_bottom(struct object_t *obj, int data) { 
+ printf("FIX THIS\n");
+ SDL_SetWindowFullscreen(win, SDL_WINDOW_FULLSCREEN_DESKTOP);
+ /*
 #ifdef WINDOWS
  gui_flags^=SDL_FULLSCREEN;
  gui_screen = SDL_SetVideoMode(gui_w, gui_h, 24, gui_flags);
@@ -634,6 +637,8 @@ int fw_bottom(struct object_t *obj, int data) {
  SDL_WM_ToggleFullScreen(gui_screen); 
 #endif
  return RET_OK;
+ */
+ return 0;
 }
 
 int sprite_overlay(struct object_t *obj, int data) {

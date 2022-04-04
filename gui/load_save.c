@@ -3,7 +3,7 @@
 #ifndef WINDOWS
  #include <unistd.h>
 #endif
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include "gui_types.h"
 #include "link.h"
 #include "drop.h"
@@ -170,17 +170,18 @@ int line_edit(int msg, struct object_t *obj, int data) {
   }
   box(obj->param.x, obj->param.y,
     obj->param.x + obj->param.w, obj->param.y+obj->param.h, obj->param.fg, obj->param.bg, NO_HASH);
-  if(CHECK_FLAG(obj->param.flags, MAX_CHARS) == TRUE)  
+  if(CHECK_FLAG(obj->param.flags, MAX_CHARS) == TRUE) {
    draw_text(obj->param.x+2, obj->param.y+(obj->param.h/2)-4,
      (char *)obj->param.dp1, &tmp_color, &tmp_color,
      NO_HASH|MAX_CHARS,(obj->param.w/8)-1);
-  else
+  }else {
    draw_text(obj->param.x+2, obj->param.y+(obj->param.h/2)-4,
      (char *)obj->param.dp1, &tmp_color, &tmp_color, NO_HASH,0);
    if(obj->in_focus == 1 && obj->param.d1 == 1) 
     fill_box(obj->param.x+2 +(8*obj->param.d2), obj->param.y+(obj->param.h/2)-4,
              obj->param.x+10+(8*obj->param.d2), obj->param.y+(obj->param.h/2)+5,
 	     &globl_bg, &globl_bg, NO_HASH);
+  }
   break;
   case MSG_INFOCUS:
   case MSG_OUTFOCUS:

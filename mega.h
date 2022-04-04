@@ -40,6 +40,9 @@
 #define SAVE_CRAM_HEAD	8
 #define CHANGE_LOAD_MESSAGE	9
 
+
+#define CAPTION		"::Mega-Happy-Sprite::"
+
 extern group_t *main_grp;
 extern group_t *load_grp, *save_grp;
 extern group_t *high_low_grp;

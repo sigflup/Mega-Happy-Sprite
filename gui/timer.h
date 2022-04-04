@@ -12,7 +12,7 @@ typedef struct {
 } gui_timer_t;
 
 extern gui_timer_t *globl_timer;
-extern Uint32 timer_callback(Uint32 interval);
+extern Uint32 timer_callback(Uint32 interval, void *a);
 
 void init_timers(void);
 gui_timer_t *add_timer(struct object_t *obj, int reset, int msg, int data, group_t *parent,int flags);

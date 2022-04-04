@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../config.h"
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include "gui_types.h"
 #include "link.h"
 #include "drop.h"
@@ -17,7 +17,10 @@
 
 #ifdef WINDOWS
 int gui_flags, gui_w, gui_h;
-#endif
+#endif 
+
+SDL_Window *win;
+SDL_Renderer *rend;
 SDL_Surface *gui_screen;
 
 void (*globl_tick)(void);
@@ -322,7 +325,6 @@ int group_loop(group_t *grp) {
       if(walker->in_focus == TRUE) {
        if(event.type == SDL_KEYUP) {
 	key = event.key.keysym.sym;
-        if( key<SDLK_NUMLOCK || key > SDLK_COMPOSE) {
          modstate = SDL_GetModState();
 	 if( CHECK_FLAG(modstate, KMOD_LSHIFT) == TRUE ||
 	     CHECK_FLAG(modstate, KMOD_RSHIFT) == TRUE ||
@@ -336,11 +338,9 @@ int group_loop(group_t *grp) {
 	 }
 	 if(walker->param.proc(MSG_KEYUP, walker, key) == RET_QUIT)
 	  goto done1;
-	}
        } else {
 	key = event.key.keysym.sym;
-        if( key<SDLK_NUMLOCK || key > SDLK_COMPOSE) {
-	 modstate = SDL_GetModState();
+        modstate = SDL_GetModState();
          if( CHECK_FLAG(modstate, KMOD_LSHIFT) == TRUE ||
 	     CHECK_FLAG(modstate, KMOD_RSHIFT) == TRUE ||
 	     CHECK_FLAG(modstate, KMOD_CAPS) == TRUE) {
@@ -352,9 +352,9 @@ int group_loop(group_t *grp) {
 	   }
 	 }
 
-	 if(walker->param.proc(MSG_KEYDOWN,walker,key) == RET_QUIT)
-	 goto done1;
-	}
+	if(walker->param.proc(MSG_KEYDOWN,walker,key) == RET_QUIT)
+	goto done1;
+	
        }
       }
       walker = (struct object_t *)walker->node.next;
@@ -415,7 +415,7 @@ int destroy_group(group_t *grp) {
  return 0;
 }
 
-int init_gui(int x,int y, int flags) {
+int init_gui(int x,int y, int flags) { 
  int sdl_flags;
 #ifdef WINDOWS
  char buf[256];
@@ -425,9 +425,13 @@ int init_gui(int x,int y, int flags) {
  globl_tick = default_tick;
  globl_wait_tick = (void *)-1;
  sdl_flags = 0;
- if(CHECK_FLAG(flags,FULLSCREEN)== TRUE) sdl_flags |= SDL_FULLSCREEN;
+ if(CHECK_FLAG(flags,FULLSCREEN)== TRUE) sdl_flags |= SDL_WINDOW_FULLSCREEN;
 
- if(!(gui_screen = SDL_SetVideoMode(x, y, 24, sdl_flags))) {
+ if(!(win = SDL_CreateWindow("Mega-Happy-Sprite",
+			     SDL_WINDOWPOS_UNDEFINED,
+			     SDL_WINDOWPOS_UNDEFINED, 
+			     x,y,
+			     sdl_flags))) {
 #ifndef WINDOWS
   printf("could not open screen: %s\n", SDL_GetError());
 #else
@@ -436,13 +440,15 @@ int init_gui(int x,int y, int flags) {
 #endif
   exit(0);
  }
+
+ rend = SDL_CreateRenderer(win, -1, 0);
+ gui_screen = SDL_GetWindowSurface(win);
 #ifdef WINDOWS
  gui_flags = sdl_flags;
  gui_w = x;
  gui_h = y;
 #endif
-
- SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
+ //SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
  gc = gui_screen;
  drop_init();
  lock_update = 0;

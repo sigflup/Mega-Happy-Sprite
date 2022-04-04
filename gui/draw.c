@@ -3,7 +3,7 @@
 #include <string.h>
 #include "../config.h"
 #include <math.h>
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include "gui_types.h"
 #include "link.h"
 #include "drop.h"
@@ -14,8 +14,10 @@
 SDL_Surface *gc;
 
 void clipped_update(int x, int y, int w, int h) {
- int pw=0,ph=0;
-
+// int pw=0,ph=0;
+ SDL_UpdateWindowSurface(win);
+// SDL_RenderPresent(rend);
+/*
  if((x+y+w+h) == 0) 
   SDL_UpdateRect(gc, 0,0,0,0);
  else {
@@ -53,6 +55,7 @@ void clipped_update(int x, int y, int w, int h) {
    SDL_UpdateRect(gc,x,y, pw,ph);
   }
  }
+*/
 }
 
 int vline(int rx, int ry, int ry2, color_t *fg, color_t *bg, int type) {

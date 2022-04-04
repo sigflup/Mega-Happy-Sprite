@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <SDL.h>
-#include <SDL_image.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include "./gui/libgui.h"
 #include "config.h"
 #include "mega.h"
@@ -384,11 +384,13 @@ void setup_windows(int flags) {
  tmp_parm.callback = really_quit;
  new_obj(main_grp, &tmp_parm);
 
- 
+/*
+ * FIXME window crashes don't know why 
  PARM(500,1,50,17,&globl_fg,&globl_bg,SHOW_FOCUS|CALL_BUTTON|DROP_SHADOW,proc_button_box);
  tmp_parm.dp1 = (void *)"About";
  tmp_parm.callback = about;
  new_obj(main_grp, &tmp_parm);
+*/
 
  PARM(20,1, 50,17,&globl_fg,&globl_bg,SHOW_FOCUS|CALL_BUTTON|DROP_SHADOW,proc_button_box);
  tmp_parm.dp1 = (void *)"Load";
@@ -410,11 +412,12 @@ void setup_windows(int flags) {
  pal_hi_low_grp = new_menu(124,88, pal_hi_low_menu, &globl_fg, &sprite_color);
  copy_move_grp = new_menu(124,88,copy_move_menu, &globl_fg, &sprite_color);
 
+ /*
  PARM(380,1,90,17,&globl_fg,&globl_bg,SHOW_FOCUS|CALL_BUTTON|DROP_SHADOW,proc_button_box);
  tmp_parm.dp1 = (void *)"Background";
  tmp_parm.callback = change_background;
  new_obj(main_grp, &tmp_parm);
-
+*/
  PARM(425,81,0,0,&globl_fg,&globl_bg,
    CALL_BUTTON|SHOW_FOCUS|LOAD_XPM_FROM_ARRAY,proc_icon_button);
  tmp_parm.callback = preview_zoom_change;
@@ -892,7 +895,22 @@ static SDL_Cursor *cursor(const char *image[])
   return SDL_CreateCursor(data, mask, 32, 32, hot_x, hot_y);
 }
 
-
+int caption_thread(void *a) {
+ char *store, *buf;
+ int size, i, j;
+ 
+ store = strdup(CAPTION);
+ buf = strdup(CAPTION);
+ size = strlen(store);
+ 
+ for(i=0;;i++) {
+  for(j=0;j<size;j++) {
+   buf[j] = store[(j+i)%size];
+  }
+  SDL_SetWindowTitle(win, buf);
+  SDL_Delay(100);
+ }
+}
 
 int main(int argc, char **argv) {
  Uint8 cram_buffer[128];
@@ -941,7 +959,7 @@ int main(int argc, char **argv) {
  save_state();
  load_ovr(NULL);
  render_vdp(0,vdp_h);
- SDL_WM_SetCaption("Mega Happy Sprite!!", NULL);
+ SDL_CreateThread(caption_thread, "caption", (void *)0);
 
  group_loop(main_grp);
  SDL_Quit();
