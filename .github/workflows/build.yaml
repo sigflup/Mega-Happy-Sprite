@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
+
+    steps:
+    - name: Set up MSYS2
+      uses: msys2/setup-msys2@v2
+      with:
+        msystem: mingw32
+        release: true
+        update: true
+        install: >-
+           msys/vim
+           msys/base-devel
+           mingw32/mingw-w64-i686-toolchain
+           mingw32/mingw-w64-i686-gcc
+           mingw32/mingw-w64-i686-clang
+           mingw32/mingw-w64-i686-SDL2
+           mingw32/mingw-w64-i686-SDL2_image
+           mingw32/mingw-w64-i686-libarchive
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Build
+      run: |
+        make -f Makefile.windows
+
+    - name: Copy Dependant DLLs
+      run: |
+        cp /mingw32/bin/SDL2.dll ./windows/
+        cp /mingw32/bin/SDL2_image.dll ./windows/
+        cp /mingw32/bin/libjpeg-*.dll ./windows/
+        cp /mingw32/bin/libjxl.dll ./windows/
+        cp /mingw32/bin/libpng*.dll ./windows/
+        cp /mingw32/bin/libwebp-*.dll ./windows/
+        cp /mingw32/bin/libtiff-*.dll ./windows/
+        cp /mingw32/bin/libgcc_s_dw2-1.dll ./windows/
+        cp /mingw32/bin/libstdc++-*.dll ./windows/
+        cp /mingw32/bin/libjbig-*.dll ./windows/
+        cp /mingw32/bin/libbrotli*.dll ./windows/
+        cp /mingw32/bin/liblcms2-*.dll ./windows/
+        cp /mingw32/bin/libsharpyuv-*.dll ./windows/
+        cp /mingw32/bin/libwinpthread-*.dll ./windows/
+        cp /mingw32/bin/liblzma-*.dll ./windows/
+        cp /mingw32/bin/libLerc.dll ./windows/
+        cp /mingw32/bin/libhwy.dll ./windows/
+        cp /mingw32/bin/zlib1.dll ./windows/
+        cp /mingw32/bin/libzstd.dll ./windows/
+        cp /mingw32/bin/libdeflate.dll ./windows/
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: windows-artifact
+        path: ./windows/*

@@ -22,7 +22,7 @@
 #include "../config.h"
 
 #ifdef WINDOWS
-# include "realpath.h"
+#define realpath(N,R) _fullpath((R),(N),_MAX_PATH)
 #endif
 
 #ifndef WINDOWS
