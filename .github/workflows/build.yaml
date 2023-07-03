@@ -3,8 +3,6 @@ name: CI
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
 
 jobs:
   build-windows:
@@ -60,8 +58,10 @@ jobs:
         cp /mingw32/bin/libzstd.dll ./windows/
         cp /mingw32/bin/libdeflate.dll ./windows/
 
+    # NOTE: artifacts do not preserve file name case or permissions
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
-        name: windows-artifact
+        retention-days: 90
+        name: win32-i686
         path: ./windows/*
