@@ -22,7 +22,7 @@
 #include "../config.h"
 
 #ifdef WINDOWS
-# include "realpath.h"
+#include "realpath.h"
 #endif
 
 #ifndef WINDOWS

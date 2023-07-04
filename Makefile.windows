@@ -2,9 +2,9 @@
 CC=clang
 LEX=lex
 CFLAGS=-target i386-mingw  -I./gui/ -D_GNU_SOURCE=1 -O2 -Wall -DWINDOWS -DDOXRANDR
-LIBS= -Dmain=SDL_main -mwindows -lmingw32 -luser32 -lgdi32 -lwinmm -ldxguid -lSDLmain -lSDL -lSDL_image -O2 ./gui/libgui.a
+LIBS= -Dmain=SDL_main -mwindows -lmingw32 -luser32 -lgdi32 -lwinmm -ldxguid -lSDL2main -lSDL2 -lSDL2_image -O2 ./gui/libgui.a
 PROGNAME=mega.exe
-WINDRES=i386-mingw32-windres
+WINDRES=windres
 
 OBJS = draw.o mega.o proc.o vdp.o bottom.o lex.yy.o uu.o bmp.o gui/libgui.a mega.res
 
