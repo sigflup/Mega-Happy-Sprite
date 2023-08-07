@@ -57,3 +57,6 @@ install: mega
 clean:
 	cd gui && make clean
 	rm -f mega mega.exe mega.core core help_text.h mega.res  lex.yy.c ${OBJS}
+
+distclean:
+	rm -rf Makefile Makefile.windows autom4te.cache config.h config.log config.status
