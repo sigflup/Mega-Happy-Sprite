@@ -372,10 +372,11 @@ void setup_windows(int flags) {
  /* not tools */
 
 #ifndef WINDOWS
- PARM(580,450,50,17,&globl_fg,&globl_bg,SHOW_FOCUS|CALL_BUTTON|DROP_SHADOW,proc_button_box);
+/* PARM(580,450,50,17,&globl_fg,&globl_bg,SHOW_FOCUS|CALL_BUTTON|DROP_SHADOW,proc_button_box);
  tmp_parm.dp1 = (void *)"F/W";
  tmp_parm.callback = fw_bottom;
  new_obj(main_grp, &tmp_parm);
+*/
 #endif
 
  
@@ -921,9 +922,10 @@ int main(int argc, char **argv) {
  flags = 0;
  load_initial = FALSE;
  for(i=1;i<argc;i++){
-  if(strncmp("-f", argv[i], 3)==0) 
-   flags = FULLSCREEN;
-  else
+  if(strncmp("-f", argv[i], 3)==0) {
+  // flags = FULLSCREEN;
+   printf("FIX THIS\n");
+  } else
    if(argv[i][0]!='-'){
     load_initial = TRUE;
     load_initial_name = strdup(argv[i]);
