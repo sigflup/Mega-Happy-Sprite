@@ -17,9 +17,11 @@
 
 int load_bmp(struct select_file_t *selector, char *filename) {
  SDL_Surface *bmp;
- int i,x,y;
+ int i,j,x,y;
  int r,g,b;
  unsigned char *pix;
+
+
  if((bmp = SDL_LoadBMP(filename))<=0) 
   return NOPE_TRY_AGAIN;
 
@@ -34,6 +36,7 @@ int load_bmp(struct select_file_t *selector, char *filename) {
  
  if(bmp->h > 224)
   return NOPE_TRY_AGAIN;
+
 
  for(i=0;i<15;i++) {
   r = bmp->format->palette->colors[i].r / (0xff/7);
@@ -60,11 +63,27 @@ int load_bmp(struct select_file_t *selector, char *filename) {
    xor_pixels[i].x = x;
    xor_pixels[i].y = y;
    xor_pixels[i].index = pix[x+(y*bmp->pitch)]+1;
-   i++;
+   
+   switch(currently_editing) {
+    case EDIT_SCROLL_A:
+     j = vdp_screen[x+(320*y)].A.pat_index;
+     current_vdp->vram[current_vdp->scroll_a + (j<<1) ] &= (3<<5);
+     current_vdp->vram[current_vdp->scroll_a + (j<<1) ] |=  
+                	   ((current_palette &3)<<5);
+     break;
+    case EDIT_SCROLL_B:
+     j = vdp_screen[x+(320*y)].B.pat_index;
+     current_vdp->vram[current_vdp->scroll_b + (j<<1) ] &= (3<<5);
+     current_vdp->vram[current_vdp->scroll_b + (j<<1) ] |=  
+                	   ((current_palette &3)<<5);
+     break;
+
+   }
+   i++; 
   }
 
  collapse();
-  
  
+
  return LOAD_OK_QUIT;
 }
