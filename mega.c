@@ -932,6 +932,14 @@ int main(int argc, char **argv) {
    }
  }
 
+ /* FIX this is a hack. Some how the default rgb scroll bars are not 0 when
+  * loading fresh */
+
+ current_vdp->palette[0][0].r = 0;
+ current_vdp->palette[0][0].g = 0;
+ current_vdp->palette[0][0].b = 0;
+ 
+
  setup_windows(flags);
 
  /* now that we have gui_screen->format we can map colors */
