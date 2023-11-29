@@ -917,6 +917,17 @@ int main(int argc, char **argv) {
  Uint8 cram_buffer[128];
  int flags;
  int i;
+
+#ifndef WINDOWS
+ printf(
+"_  _ ____ ____ ____    _  _ ____ ___  ___  _   _    ____ ___  ____ _ ___ ____\n"
+"|\\/| |___ | __ |__|    |__| |__| |__] |__]  \\_/     [__  |__] |__/ |  |  |___\n"
+"|  | |___ |__] |  |    |  | |  | |    |      |      ___] |    |  \\ |  |  |___\n" 
+ );                                                                      
+
+#endif
+
+
  gui_screen = (SDL_Surface *)0;
  vdp_init();
  flags = 0;
@@ -973,10 +984,9 @@ int main(int argc, char **argv) {
 
  group_loop(main_grp);
  SDL_Quit();
+
 #ifndef WINDOWS
- printf("\n        Thank you for using Mega-Happy-Sprite!\n"
-        "**Call 24-hours a day, 2 nodes, door-games and more!**\n"
-	"              your friendly sysop\n\n");
+ printf("\nThanks for using this program!!\nIf you want to contact the author email pantsbutt@gmail.com\n");
 #endif
  return 0;
 }
