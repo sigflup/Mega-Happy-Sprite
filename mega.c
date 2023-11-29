@@ -120,6 +120,8 @@ int a_pattern=0, b_pattern=0;
 
 color_t sprite_color, hscroll_color, scroll_a_color, scroll_b_color, window_color;
 
+SDL_sem *caption_sem, *caption_end;
+
 struct menu_entry_t load_menu[] = {
  {"  MEGA  Text     ", CALL_BUTTON, LOAD_HAPPY, load_save_middle},
  {"  VRAM  Binary   ", CALL_BUTTON, LOAD_VRAM,  load_save_middle},
@@ -910,7 +912,9 @@ int caption_thread(void *a) {
   }
   SDL_SetWindowTitle(win, buf);
   SDL_Delay(100);
+  if(SDL_SemValue(caption_sem) == 1) break;
  }
+ return 0;
 }
 
 int main(int argc, char **argv) {
@@ -980,6 +984,10 @@ int main(int argc, char **argv) {
  save_state();
  load_ovr(NULL);
  render_vdp(0,vdp_h);
+ caption_sem = SDL_CreateSemaphore(0);
+ caption_end = SDL_CreateSemaphore(0);
+
+
  SDL_CreateThread(caption_thread, "caption", (void *)0);
 
  group_loop(main_grp);

@@ -62,7 +62,7 @@ int load_bmp(struct select_file_t *selector, char *filename) {
   for(x=0;x<bmp->w;x++) {
    xor_pixels[i].x = x;
    xor_pixels[i].y = y;
-   xor_pixels[i].index = pix[x+(y*bmp->pitch)]+1;
+   xor_pixels[i].index = pix[x+(y*bmp->pitch)];
    
    switch(currently_editing) {
     case EDIT_SCROLL_A:
