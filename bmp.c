@@ -48,9 +48,9 @@ int load_bmp(struct select_file_t *selector, char *filename) {
   b = bmp->format->palette->colors[i].b / (0xff/7);
   b*= (0xff/7);
 
-  current_vdp->palette[current_palette][i+1].r = r;
-  current_vdp->palette[current_palette][i+1].g = g;
-  current_vdp->palette[current_palette][i+1].b = b;
+  current_vdp->palette[current_palette][i].r = r;
+  current_vdp->palette[current_palette][i].g = g;
+  current_vdp->palette[current_palette][i].b = b;
   MAP_COLOR(current_vdp->palette[current_palette][i]);
  } 
 
