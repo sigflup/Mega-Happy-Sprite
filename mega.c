@@ -387,13 +387,10 @@ void setup_windows(int flags) {
  tmp_parm.callback = really_quit;
  new_obj(main_grp, &tmp_parm);
 
-/*
- * FIXME window crashes don't know why 
  PARM(500,1,50,17,&globl_fg,&globl_bg,SHOW_FOCUS|CALL_BUTTON|DROP_SHADOW,proc_button_box);
  tmp_parm.dp1 = (void *)"About";
  tmp_parm.callback = about;
  new_obj(main_grp, &tmp_parm);
-*/
 
  PARM(20,1, 50,17,&globl_fg,&globl_bg,SHOW_FOCUS|CALL_BUTTON|DROP_SHADOW,proc_button_box);
  tmp_parm.dp1 = (void *)"Load";
