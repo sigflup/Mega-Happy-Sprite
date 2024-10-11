@@ -1,3 +1,8 @@
+/*
+ * Mega Happy Sprite is released under the BSD 3-Clause license.
+ * read ../LICENSE for more info
+ */
+
 #define PARM(X,Y,W,H,FG,BG,FLAGS,PROC)	tmp_parm.x = X;\
 				        tmp_parm.y = Y; \
 					tmp_parm.w = W; \

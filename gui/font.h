@@ -1,3 +1,9 @@
+/*
+ * Mega Happy Sprite is released under the BSD 3-Clause license.
+ * read ../LICENSE for more info
+ */
+
+
 #define CENTER_OF_STRING(a)	(((strlen(a)*8)/2))
 
 #define CR_TERMINAL	8

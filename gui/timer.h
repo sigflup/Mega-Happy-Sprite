@@ -1,3 +1,8 @@
+/*
+ * Mega Happy Sprite is released under the BSD 3-Clause license.
+ * read ../LICENSE for more info
+ */
+
 #define ACTIVE_ONLY_WITH_PARENT	1
 #define STOPPED			2
 

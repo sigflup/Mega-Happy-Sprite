@@ -1,3 +1,8 @@
+/*
+ * Mega Happy Sprite is released under the BSD 3-Clause license.
+ * read ../LICENSE for more info
+ */
+
 #define NO_HASH		1	
 #define HASH		2
 /* ok so the above two are constants for non-text draw stuff */
