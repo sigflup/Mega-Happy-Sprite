@@ -39,17 +39,12 @@ proc.o: proc.c config.h mega.h vdp.h draw.h proc.h
 vdp.o: vdp.c config.h mega.h vdp.h
 	${CC} -c ${CFLAGS} vdp.c
 
-bottom.o: bottom.c config.h bottom.h help_text.h
+bottom.o: bottom.c config.h bottom.h 
 	${CC} -c ${CFLAGS} bottom.c
 
 gui/libgui.a:
 	cd gui && make
 
-help_text.h: ABOUT 
-	echo "char help_text[] = {" > help_text.h
-	xxd -i < ABOUT >> help_text.h
-	echo "};" >> help_text.h
-	printf "int help_text_len = %d;\n" `wc -c < ABOUT` >> help_text.h
 
 install: mega
 	install mega $(DESTDIR)$(PREFIX)/mega

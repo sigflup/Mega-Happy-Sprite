@@ -19,7 +19,6 @@
 #include "proc.h"
 #include "bottom.h"
 #include "mega_file.h"
-#include "help_text.h"
 #include "bmp.h"
 
 struct select_file_t *load_sel, *save_sel;
