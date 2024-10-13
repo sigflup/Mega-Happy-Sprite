@@ -15,7 +15,7 @@ endif
 
 OBJS = draw.o mega.o proc.o vdp.o bottom.o lex.yy.o uu.o bmp.o gui/libgui.a
 
-mega: ${OBJS}
+mega all: ${OBJS}
 	${CC} -o ${PROGNAME}  ${OBJS} ${LIBS}
 
 lex.yy.o: lex.yy.c config.h mega_file.h

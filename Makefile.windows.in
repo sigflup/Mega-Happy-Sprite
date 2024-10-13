@@ -8,7 +8,7 @@ WINDRES=i386-mingw32-windres
 
 OBJS = draw.o mega.o proc.o vdp.o bottom.o lex.yy.o uu.o bmp.o gui/libgui.a mega.res
 
-mega: ${OBJS}
+mega all: ${OBJS}
 	${CC} -o ${PROGNAME}  ${OBJS} ${LIBS}
 	cp ${PROGNAME} windows
 
