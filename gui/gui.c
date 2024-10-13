@@ -448,6 +448,15 @@ int init_gui(int x,int y, int flags) {
 
  rend = SDL_CreateRenderer(win, -1, 0);
  gui_screen = SDL_GetWindowSurface(win);
+
+#ifndef WINDOWS
+
+ if(strncmp("x11", SDL_GetCurrentVideoDriver(), strlen("x11")) != 0) {
+  printf("can't use x11 video driver\n");
+  exit(-1);
+ }
+#endif
+
 #ifdef WINDOWS
  gui_flags = sdl_flags;
  gui_w = x;
