@@ -619,8 +619,9 @@ int undo_button(struct object_t *obj, int data) {
 
 int about(struct object_t *obj, int data) {
  alert(gui_screen->w/2,gui_screen->h/2,
-	 "Original dev: sigflup\n\n"
-         "Contributors: bitRAKE, ExtraordinaryBen" , "Cool"); 
+	 "sigflup\n\n"
+         "bitRAKE\n"
+	 "ExtraordinaryBen" , "Cool"); 
  return RET_OK;
 }
 
