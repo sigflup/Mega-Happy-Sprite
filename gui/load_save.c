@@ -443,42 +443,58 @@ void read_dir(struct select_file_t *selector) {
 
 
 int do_save(struct select_file_t *selector, char *filename) {
- char sorry_text[SMALLBUF];
+#define MESSAGE "Cannot save this as %s"
+ int size;
+ char *sorry_text = (char *)0;
 
  if(selector->load_proc(selector, filename) == LOAD_OK_QUIT) {
   selector->blinky->flags |= STOPPED;
   return RET_QUIT;
  } else {
-  snprintf(sorry_text, SMALLBUF,"--== Sorry ==--\n*puts down pen* I cannot save this as %s",
-    selector->file_type_name);
-  alert(gui_screen->w/2, gui_screen->h/2, sorry_text, "OK :C"); 
+  if(selector->file_type_name != (char *)0) {
+   size = strlen(MESSAGE);
+   size+= strlen(selector->file_type_name);
+   snprintf(sorry_text, size+1,MESSAGE, selector->file_type_name);
+   sorry_text = malloc(size+1);
+   alert(gui_screen->w/2, gui_screen->h/2, sorry_text, "OK :C"); 
+   free(sorry_text); 
+  }
   return RET_OK;
  }
-
+#undef MESSAGE
 }
 
 int do_load(struct select_file_t *selector, char *filename) {
- char sorry_text[SMALLBUF];
+#define MESSAGE "Cannot load this as %s"
+ char *sorry_text = (char *)0;
+ int size;
  int fp;
 
  if((fp = open(filename, O_RDONLY))<0) {
-  snprintf(sorry_text, SMALLBUF, "--== Sorry ==--\n"
-                                  "*shuffles papers* %s", strerror(errno) );
-  alert(gui_screen->w/2, gui_screen->h/2, sorry_text, "OK :.<");
+  if(strerror(errno)!=(char *)0) {
+   alert(gui_screen->w/2, gui_screen->h/2, strerror(errno), "OK :.<");
+
+  } 
   return RET_OK;
  }
  close(fp); 
 
 
- if(selector->load_proc(selector, filename) == LOAD_OK_QUIT) {
-  selector->blinky->flags |= STOPPED;
+ if(selector->load_proc(selector, filename) == LOAD_OK_QUIT) 
+//  selector->blinky->flags |= STOPPED;
   return RET_QUIT;
- } else {
-  snprintf(sorry_text,SMALLBUF, "--== Sorry ==--\n*puts down pen* I cannot load this as %s",
-    selector->file_type_name);
-  alert(gui_screen->w/2, gui_screen->h/2, sorry_text, "OK :.<");
+ else {
+  if(selector->file_type_name!=(char *)0) {
+   size = strlen(MESSAGE);
+   size+= strlen(selector->file_type_name);
+   sorry_text = malloc(size+1);
+   snprintf(sorry_text, size+1, MESSAGE, selector->file_type_name);
+   alert(gui_screen->w/2, gui_screen->h/2, sorry_text, "OK :.<");
+   free(sorry_text);
+  }
   return RET_OK;
  }
+#undef MESSAGE
 }
 
 int ok_cancel(struct object_t *obj, int data) {
@@ -489,7 +505,9 @@ int ok_cancel(struct object_t *obj, int data) {
 }
 
 int ok_do(struct object_t *obj, int data) {
- char name[BIGBUF];
+#define MESSAGE "%s/%s"
+ char *name = (char *)0;
+ int size, ret;
  struct select_file_t *selector;
  selector = (struct select_file_t *)obj->param.dp2;
  if(selector->name[0] == '/') {
@@ -498,11 +516,29 @@ int ok_do(struct object_t *obj, int data) {
   else
    return do_save(selector,selector->name);
  }
- snprintf(name, BIGBUF, "%s/%s", selector->path, selector->name);
- if(selector->type == LOAD)
-  return do_load(selector, name);
- else
-  return do_save(selector,name);
+
+ if((selector->path!=(char *)0)&&(selector->name!=(char *)0)) {
+  size = strlen(MESSAGE);
+  size+= strlen(selector->path);
+  size+= strlen(selector->name);
+  name = malloc(size+1);
+  snprintf(name, size+1, MESSAGE, selector->path, selector->name);
+  if(selector->type == LOAD)
+   ret = do_load(selector, name);
+  else
+   ret = do_save(selector,name);
+  
+  free(name);
+  return(ret);
+
+
+ } else {
+  printf("HERE: strings not initialized for some reason");
+  exit(0);
+ }
+
+ return RET_OK;
+#undef MESSAGE
 }
 
 struct select_file_t *setup_overlay_window(int w, int h, int type, char *file_type_name, 

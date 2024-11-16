@@ -55,10 +55,9 @@ int get_pix_special(Uint8 *ram, int pat, int x, int y) {
 
 void put_pix(Uint8 *ram, int pat, int x, int y) {
  int base =0;
- Uint8 dat=0,ldat=0;
+ Uint8 dat;
  base = (pat * 0x20) +(((y*8)+x)>>1);
  dat = ram[base];
- ldat = dat;
  if( (x&1)==0) {
   dat &=0x0f;
   dat += (current_palette_index<<4);
@@ -98,7 +97,8 @@ void do_flood(Uint8 *ram, int pat, int x, int y, int wx1, int wy1, int wx2, int 
     put(ram,pat,x,y);
    PUSH(y,l,x-1,dy);
    if(x>x2+1) PUSH(y,x2+1,x-1,-dy);
-s: for(x++;x<=x2 && get(ram,pat,x,y)!=ov;x++);
+s: 
+   for(x++;x<=x2 && get(ram,pat,x,y)!=ov;x++);
    l = x;
   } while (x<=x2);
  }

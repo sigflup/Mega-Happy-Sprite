@@ -110,7 +110,6 @@ decode(char *name)
 static int
 decode2(char *name)
 {
-	int mode;
 	size_t n;
 	char *p, *q;
 	char buf[MAXPATHLEN];
@@ -164,7 +163,8 @@ getline2(char *buf, size_t size)
 		return (2);
 	if (rflag)
 		return (0);
-	printf("%s: %s: short file", infile, outfile);
+	if((infile != (char *)0)&&(outfile != (char *)0))
+	 printf("%s: %s: short file", infile, outfile);
 	return (1);
 }
 
@@ -188,6 +188,7 @@ uu_decode(void)
 #define IS_DEC(c) ( (((c) - ' ') >= 0) && (((c) - ' ') <= 077 + 1) )
 
 #define OUT_OF_RANGE do {						\
+	if((infile != (char *)0) && (outfile != (char *)0))		\
 	printf("%s: %s: character out of range: [%d-%d]",		\
 	    infile, outfile, 1 + ' ', 077 + ' ' + 1);			\
 	return (1);							\
@@ -263,9 +264,7 @@ int in_read(char *out_buf, int len) {
 
 int uuenc(FILE *fp, char *name, unsigned char *buf, int len)
 {
-	int base64;
 
-	base64 = 0;
 	output = fp;
 	mode = 644;
 	in_name = name;

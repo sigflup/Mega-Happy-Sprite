@@ -456,7 +456,6 @@ int proc_sprite_size(int msg, struct object_t *obj, int data) {
  int i;
  int x=0,y=0;
  int lx,ly;
- int ox, oy;
  switch(msg) {
   case MSG_DRAW:
 
@@ -469,8 +468,6 @@ int proc_sprite_size(int msg, struct object_t *obj, int data) {
    }
    break;
   case MSG_CLICK:
-   ox = sprite_width;
-   oy = sprite_height;
    lx = ((gui_mouse_x-obj->param.x) / 10);
    ly = ((gui_mouse_y-obj->param.y) / 10);
    for(;;) {
@@ -614,7 +611,7 @@ int proc_preview_object(int msg, struct object_t *obj, int data) {
  int ret=0;
  SDL_Rect src;
  vdp_pixel *current_pixels=0;
- int current_w=0, current_h=0;
+ int current_w = 0;
  int tmp_h=0, tmp_w=0;
 
  if(currently_editing == EDIT_SPRITE) {
@@ -644,12 +641,10 @@ int proc_preview_object(int msg, struct object_t *obj, int data) {
  if(currently_editing == EDIT_SPRITE) {
   current_pixels = sprite_screen;
   current_w = 32;
-  current_h = 32;
   render_sprite();
  } else {
   current_pixels = vdp_screen;
   current_w = 320;
-  current_h = 240;
  }
 
 

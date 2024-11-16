@@ -402,14 +402,12 @@ done1:
 
 int destroy_group(group_t *grp) {
  struct object_t *walker;
- struct object_t *prev;
 
  broadcast_group(grp, MSG_DESTROY, 0);
 
  walker = grp->objs;
  if(walker != (struct object_t *)NULL) {
   for(;;) {
-   prev = walker;
    walker = (struct object_t *)walker->node.next;
    if(walker==grp->objs) break;
 //   free(prev);
@@ -452,12 +450,12 @@ int init_gui(int x,int y, int flags) {
  gui_screen = SDL_GetWindowSurface(win);
 
 #ifndef WINDOWS
- driver_name = SDL_GetCurrentVideoDriver();
+ driver_name = (char *)SDL_GetCurrentVideoDriver();
 
  a = strncmp("x11", driver_name, strlen("x11"));
  b = strncmp("wayland", driver_name, strlen("wayland"));
 
- if(a!=0&&b!=0) {
+ if((a!=0)&&(b!=0)) {
   printf("can't use x11 or wayland video driver\n");
   exit(-1);
  }
