@@ -425,6 +425,8 @@ int init_gui(int x,int y, int flags) {
 #ifdef WINDOWS
  char buf[256];
 #endif
+ char *driver_name;
+ int a,b;
  SDL_Init(SDL_INIT_TIMER|SDL_INIT_VIDEO);
  init_timers();
  globl_tick = default_tick;
@@ -450,9 +452,13 @@ int init_gui(int x,int y, int flags) {
  gui_screen = SDL_GetWindowSurface(win);
 
 #ifndef WINDOWS
+ driver_name = SDL_GetCurrentVideoDriver();
 
- if(strncmp("x11", SDL_GetCurrentVideoDriver(), strlen("x11")) != 0) {
-  printf("can't use x11 video driver\n");
+ a = strncmp("x11", driver_name, strlen("x11"));
+ b = strncmp("wayland", driver_name, strlen("wayland"));
+
+ if(a!=0&&b!=0) {
+  printf("can't use x11 or wayland video driver\n");
   exit(-1);
  }
 #endif
