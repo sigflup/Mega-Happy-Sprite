@@ -325,6 +325,16 @@ int group_loop(group_t *grp) {
     break;
     case SDL_KEYUP:
     case SDL_KEYDOWN:
+
+     if((event.key.keysym.sym == SDLK_LCTRL) ||
+	(event.key.keysym.sym == SDLK_LSHIFT) ||
+	(event.key.keysym.sym == SDLK_LALT) ||
+	(event.key.keysym.sym == SDLK_LGUI) ||
+	(event.key.keysym.sym == SDLK_RCTRL) ||
+	(event.key.keysym.sym == SDLK_RSHIFT) ||
+	(event.key.keysym.sym == SDLK_RALT) ||
+	(event.key.keysym.sym == SDLK_RGUI)) break;
+
      walker = grp->objs;
      for(;;) {
       if(walker->in_focus == TRUE) {
