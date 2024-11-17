@@ -11,7 +11,7 @@ char *credits = {
 " \\__|IIIIII|__/ \n"
 "  | \\IIIIII/ |  \n"
 "  \\          /  \n"
-"   `--------`   \n"
+"   `--------`jgs\n"
 "sigflup\n"
 "\n"
 "bitRAKE\n"
