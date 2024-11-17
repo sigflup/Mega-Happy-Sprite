@@ -21,6 +21,8 @@
 #include "mega_file.h"
 #include "bmp.h"
 
+#include "skull.h"
+
 struct select_file_t *load_sel, *save_sel;
 struct object_t *last_tool;
 
@@ -618,10 +620,7 @@ int undo_button(struct object_t *obj, int data) {
 
 
 int about(struct object_t *obj, int data) {
- alert(gui_screen->w/2,gui_screen->h/2,
-	 "sigflup\n\n"
-         "bitRAKE\n"
-	 "ExtraordinaryBen" , "Cool"); 
+ alert(gui_screen->w/2,gui_screen->h/2, credits, "Cool");
  return RET_OK;
 }
 
