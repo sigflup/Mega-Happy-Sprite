@@ -20,7 +20,7 @@ AC_CHECK_HEADERS([stdlib.h])
 AC_FUNC_MALLOC
 AC_CHECK_FUNCS([bzero])
 
-AC_CONFIG_FILES([Makefile gui/Makefile Makefile.windows gui/Makefile.windows])
+AC_CONFIG_FILES([Makefile gui/Makefile])
 
 AC_C_BIGENDIAN([AC_DEFINE(BIG,1,[big])], [AC_DEFINE(LITTLE,1,[little])])
 
