@@ -1,9 +1,9 @@
 
-CFLAGS= -I./ -D_GNU_SOURCE=1 -Wall -DWINDOWS
-CC = mingw32-gcc
+CFLAGS= -I../windows/include -I./ -D_GNU_SOURCE=1 -Wall -DWINDOWS
+CC = x86_64-w64-mingw32-gcc 
 INSTALL= install
-AR = mingw32-ar
-RANLIB=mingw32-ranlib
+AR = x86_64-w64-mingw32-ar
+RANLIB=x86_64-w64-mingw32-ranlib
 
 OBJS = realpath.o draw.o font.o gui.o link.o std_dialog.o drop.o timer.o load_save.o menu.o
 
