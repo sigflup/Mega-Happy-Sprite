@@ -10,7 +10,7 @@ OBJS = draw.o mega.o proc.o vdp.o bottom.o lex.yy.o uu.o bmp.o gui/libgui.a mega
 
 mega all: ${OBJS}
 	${CC} -o ${PROGNAME}  ${OBJS} ${LIBS}
-	cp ${PROGNAME} windows/exe
+	cp ${PROGNAME} windows/bin
 
 lex.yy.o: lex.yy.c mega_file.h
 	${CC} -c ${CFLAGS} lex.yy.c
