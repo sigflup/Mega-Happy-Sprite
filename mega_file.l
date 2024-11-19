@@ -10,7 +10,6 @@
 #include <fcntl.h>
 #include <SDL2/SDL.h>
 #include <libgui.h>
-#include "config.h"
 #include "mega.h"
 #include "vdp.h"
 #include "draw.h"

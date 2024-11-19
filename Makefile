@@ -18,28 +18,28 @@ OBJS = draw.o mega.o proc.o vdp.o bottom.o lex.yy.o uu.o bmp.o gui/libgui.a
 mega all: ${OBJS}
 	${CC} -o ${PROGNAME}  ${OBJS} ${LIBS}
 
-lex.yy.o: lex.yy.c config.h mega_file.h
+lex.yy.o: lex.yy.c mega_file.h
 	${CC} -c ${CFLAGS} lex.yy.c
 
-lex.yy.c: mega_file.l config.h mega_file.h
+lex.yy.c: mega_file.l mega_file.h
 	${LEX} mega_file.l
 
-uu.o: uu.c config.h
+uu.o: uu.c 
 	${CC} -c ${CFLAGS} uu.c
 
-draw.o: draw.c config.h mega.h vdp.h draw.h
+draw.o: draw.c mega.h vdp.h draw.h
 	${CC} -c ${CFLAGS} draw.c
 
-mega.o: mega.c config.h mega.h vdp.h proc.h
+mega.o: mega.c mega.h vdp.h proc.h
 	${CC} -c ${CFLAGS} mega.c
 
-proc.o: proc.c config.h mega.h vdp.h draw.h proc.h
+proc.o: proc.c mega.h vdp.h draw.h proc.h
 	${CC} -c ${CFLAGS} proc.c
 
-vdp.o: vdp.c config.h mega.h vdp.h
+vdp.o: vdp.c mega.h vdp.h
 	${CC} -c ${CFLAGS} vdp.c
 
-bottom.o: bottom.c config.h bottom.h 
+bottom.o: bottom.c bottom.h 
 	${CC} -c ${CFLAGS} bottom.c
 
 gui/libgui.a:
@@ -51,7 +51,4 @@ install: mega
 
 clean:
 	cd gui && make clean
-	rm -f mega mega.exe mega.core core help_text.h mega.res  lex.yy.c ${OBJS}
-
-distclean:
-	rm -rf Makefile Makefile.windows autom4te.cache config.h config.log config.status
+	rm -f mega mega.exe mega.core core mega.res  lex.yy.c ${OBJS}

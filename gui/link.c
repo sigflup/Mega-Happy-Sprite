@@ -3,7 +3,6 @@
  * read ../LICENSE for more info
  */
 
-#include "../config.h"
 #include "link.h"
 
 void __list_add(struct list_head *new,

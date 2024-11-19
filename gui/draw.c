@@ -6,7 +6,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../config.h"
 #include <math.h>
 #include <SDL2/SDL.h>
 #include "gui_types.h"

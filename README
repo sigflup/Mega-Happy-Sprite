@@ -2,7 +2,6 @@
 
 This is Mega-Happy-Sprite. To install, run
 
-./configure
 make
 make install
 

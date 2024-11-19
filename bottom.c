@@ -13,7 +13,6 @@
 #include <sys/stat.h>
 #include <SDL2/SDL.h>
 #include "./gui/libgui.h"
-#include "config.h"
 #include "mega.h"
 #include "vdp.h"
 #include "proc.h"

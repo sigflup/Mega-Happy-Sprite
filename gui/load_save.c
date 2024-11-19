@@ -24,7 +24,6 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include "../config.h"
 
 #ifdef WINDOWS
 #include "realpath.h"
