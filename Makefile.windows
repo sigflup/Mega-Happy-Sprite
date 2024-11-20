@@ -48,4 +48,4 @@ install: mega
 
 clean:
 	cd gui && make -f Makefile.windows clean
-	rm -f mega mega.exe mega.core core lex.yy.c mega.res windows/bin/mega.exe ${OBJS}
+	rm -f mega mega.exe windows/bin/mega.exe mega.core core lex.yy.c mega.res windows/bin/mega.exe ${OBJS}
